@@ -22,10 +22,10 @@ public class AddRationItemsAdapter extends RecyclerView.Adapter<AddRationItemsAd
     ArrayList<String> itemNames = new ArrayList<>();
     ArrayList<String> itemUnits = new ArrayList<>();
 
-    private ImageViewCallback imageViewCallbackListener;
+    private ItemQtyAdapterCallback itemQtyAdapterCallbackListener;
 
-    public void setOnImageViewCallbackListener(ImageViewCallback callback) {
-        imageViewCallbackListener = callback;
+    public void addOnItemQtyChangeListener(ItemQtyAdapterCallback callback) {
+        itemQtyAdapterCallbackListener = callback;
     }
 
     public AddRationItemsAdapter(Activity mActivity,
@@ -63,7 +63,7 @@ public class AddRationItemsAdapter extends RecyclerView.Adapter<AddRationItemsAd
                 } catch (NumberFormatException e) {
                     currItemQty = 0L;
                 }
-                imageViewCallbackListener.setImageInMainActivity(position, currItemQty);
+                itemQtyAdapterCallbackListener.setItemQuantity(position, currItemQty);
             }
 
             @Override
@@ -95,8 +95,8 @@ public class AddRationItemsAdapter extends RecyclerView.Adapter<AddRationItemsAd
         }
     }
 
-    public interface ImageViewCallback {
-        void setImageInMainActivity(int position, Long currItemQty);
+    public interface ItemQtyAdapterCallback {
+        void setItemQuantity(int position, Long currItemQty);
     }
 
 }

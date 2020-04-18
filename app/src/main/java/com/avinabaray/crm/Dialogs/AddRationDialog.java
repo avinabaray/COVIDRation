@@ -3,12 +3,10 @@ package com.avinabaray.crm.Dialogs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -68,9 +66,9 @@ public class AddRationDialog extends Dialog {
 
         AddRationItemsAdapter addRationItemsAdapter = new AddRationItemsAdapter(mActivity, itemNames, itemUnits);
 
-        addRationItemsAdapter.setOnImageViewCallbackListener(new AddRationItemsAdapter.ImageViewCallback() {
+        addRationItemsAdapter.addOnItemQtyChangeListener(new AddRationItemsAdapter.ItemQtyAdapterCallback() {
             @Override
-            public void setImageInMainActivity(int position, Long currItemQty) {
+            public void setItemQuantity(int position, Long currItemQty) {
                 itemQtys.set(position, currItemQty);
             }
         });
