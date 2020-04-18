@@ -179,7 +179,7 @@ public class RegisterUserActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(mActivity, "Successfully Registered", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(mActivity, UserDashboardActivity.class);
+                        Intent i = new Intent(mActivity, UserDashActivity.class);
                         startActivity(i);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

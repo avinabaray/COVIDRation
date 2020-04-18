@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 //                                    details1Uploaded = documentSnapshot.getBoolean("details1Uploaded");
 //                                    photo2Uploaded = documentSnapshot.getBoolean("details2Uploaded");
 
-                                    Intent intent = new Intent(mActivity, UserDashboardActivity.class);
+                                    Intent intent = new Intent(mActivity, UserDashActivity.class);
 //                                    if (details1Uploaded && photo2Uploaded) {
 //                                        // Intent to Dashboard
 //                                        intent = new Intent(mActivity, DashboardActivity.class);

@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class UserDashboardActivity extends BaseActivity {
+public class UserDashActivity extends BaseActivity {
 
     private static final String TAG = "UserDashAct";
     private Button addRationRequestBtn;
