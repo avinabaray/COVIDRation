@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avinabaray.crm.Dialogs.AddRationDialog;
@@ -26,6 +27,7 @@ public class UserDashboardActivity extends BaseActivity {
     private static final String TAG = "UserDashAct";
     private Button addRationRequestBtn;
     private RecyclerView rationRecycler;
+    private ConstraintLayout rootLayout;
     Activity mActivity = this;
 
     CommonMethods commonMethods = new CommonMethods();
@@ -39,6 +41,7 @@ public class UserDashboardActivity extends BaseActivity {
 
         addRationRequestBtn = findViewById(R.id.addRationRequestBtn);
         rationRecycler = findViewById(R.id.rationRecycler);
+        rootLayout  = findViewById(R.id.rootLayout);
 
         addRationRequestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +58,7 @@ public class UserDashboardActivity extends BaseActivity {
                                 itemNames = (ArrayList<String>) documentSnapshot.get("itemNames");
                                 itemUnits = (ArrayList<String>) documentSnapshot.get("itemUnits");
 
-                                AddRationDialog addRationDialog = new AddRationDialog(mActivity, itemNames, itemUnits);
+                                AddRationDialog addRationDialog = new AddRationDialog(mActivity, itemNames, itemUnits, rootLayout);
                                 addRationDialog.setCanceledOnTouchOutside(false);
                                 addRationDialog.show();
 

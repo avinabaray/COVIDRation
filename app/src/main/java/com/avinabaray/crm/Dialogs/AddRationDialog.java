@@ -4,17 +4,26 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avinabaray.crm.Adapters.AddRationItemsAdapter;
+import com.avinabaray.crm.MainActivity;
+import com.avinabaray.crm.Models.RationRequestModel;
 import com.avinabaray.crm.R;
 import com.avinabaray.crm.Utils.CommonMethods;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -29,15 +38,18 @@ public class AddRationDialog extends Dialog {
     private RecyclerView itemsToAddRecycler;
     private Button requestItemsBtn;
     private AlertDialog.Builder alertBuilder;
+    private ConstraintLayout rootLayout;
     CommonMethods commonMethods = new CommonMethods();
 
     public AddRationDialog(@NonNull Activity mActivity,
                            ArrayList<String> itemNames,
-                           ArrayList<String> itemUnits) {
+                           ArrayList<String> itemUnits,
+                           ConstraintLayout rootLayout) {
         super(mActivity);
         this.mActivity = mActivity;
         this.itemNames = itemNames;
         this.itemUnits = itemUnits;
+        this.rootLayout = rootLayout;
     }
 
     @Override
@@ -79,6 +91,8 @@ public class AddRationDialog extends Dialog {
         requestItemsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.wtf("USER_NAME", MainActivity.CURRENT_USER_MODEL.getName());
+
                 boolean allZero = true;
                 for (Long l : itemQtys) {
                     if (l > 0) {
@@ -90,6 +104,38 @@ public class AddRationDialog extends Dialog {
                     commonMethods.createAlert(alertBuilder, "All items can't be Zero");
                     return;
                 }
+
+                DocumentReference mDocRef = FirebaseFirestore.getInstance()
+                        .collection("rationRequest")
+                        .document();
+
+                RationRequestModel newRationRequestModel = new RationRequestModel();
+
+                newRationRequestModel.setId(mDocRef.getId());
+                newRationRequestModel.setUserName(MainActivity.CURRENT_USER_MODEL.getName());
+                newRationRequestModel.setUserId(MainActivity.CURRENT_USER_MODEL.getId());
+                newRationRequestModel.setUserRole(MainActivity.CURRENT_USER_MODEL.getUserRole());
+                newRationRequestModel.setItemNames(itemNames);
+                newRationRequestModel.setItemUnits(itemUnits);
+                newRationRequestModel.setItemQtys(itemQtys);
+                newRationRequestModel.setPinCode(MainActivity.CURRENT_USER_MODEL.getPinCode());
+                newRationRequestModel.setTimestamp(Timestamp.now());
+
+                commonMethods.loadingDialogStart(mActivity);
+                mDocRef.set(newRationRequestModel)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                commonMethods.loadingDialogStop();
+                                if (task.isSuccessful()) {
+                                    commonMethods.makeSnack(rootLayout, "Request added Successfully");
+                                    dismiss();
+                                } else {
+                                    commonMethods.makeSnack(rootLayout, mActivity.getString(R.string.oops_error));
+                                    dismiss();
+                                }
+                            }
+                        });
 
 
 

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.avinabaray.crm.Models.UserModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public static String CURRENT_PHONE;
     public static String CURRENT_USER_ID;
     public static String CURRENT_USER_ROLE;
+    public static String CURRENT_USER_NAME;
+    public static UserModel CURRENT_USER_MODEL = new UserModel();
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(i);
                             } else {
                                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                    MainActivity.CURRENT_USER_MODEL = documentSnapshot.toObject(UserModel.class);
                                     CURRENT_USER_ID = documentSnapshot.getId();
                                     editor.putString("CURRENT_USER_ID", CURRENT_USER_ID);
                                     editor.apply();

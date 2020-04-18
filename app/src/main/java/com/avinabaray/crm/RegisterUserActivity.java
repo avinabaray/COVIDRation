@@ -172,7 +172,7 @@ public class RegisterUserActivity extends AppCompatActivity {
 
         newUserModel.setPhone(pref.getString("CURRENT_PHONE", ""));
         newUserModel.setId(mDocRef.getId());
-        newUserModel.setTimeStamp(Timestamp.now());
+        newUserModel.setTimestamp(Timestamp.now());
 
         mDocRef.set(newUserModel)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

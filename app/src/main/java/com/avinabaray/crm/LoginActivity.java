@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.avinabaray.crm.Models.UserModel;
 import com.avinabaray.crm.Utils.CommonMethods;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -206,8 +207,12 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 // Exiting user
                                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                    MainActivity.CURRENT_USER_ID = documentSnapshot.getId();
-                                    editor.putString("CURRENT_USER_ID", MainActivity.CURRENT_USER_ID);
+                                    MainActivity.CURRENT_USER_MODEL = documentSnapshot.toObject(UserModel.class);
+//                                    MainActivity.CURRENT_USER_ID = documentSnapshot.getId();
+                                    editor.putString("CURRENT_USER_ID", MainActivity.CURRENT_USER_MODEL.getId());
+                                    editor.putString("CURRENT_USER_ROLE", MainActivity.CURRENT_USER_MODEL.getUserRole());
+                                    editor.putString("CURRENT_USER_NAME", MainActivity.CURRENT_USER_MODEL.getName());
+
                                     editor.apply();
 
 //                                    MainActivity.details1Uploaded = documentSnapshot.getBoolean("details1Uploaded");

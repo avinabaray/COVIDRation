@@ -4,18 +4,22 @@ import com.google.firebase.Timestamp;
 
 public class UserModel {
 
-    String id;
-    String phone;
-    Timestamp timeStamp;
-    String name;
-    String address;
-    Long pinCode;
-    Long monthlyIncome;
-    String occupation;
-    Long adultMembers;
-    Long childMembers;
-    Long earningMembers;
-    Boolean activeStatus = true;
+    private String id;
+    private String phone;
+    private Timestamp timestamp;
+    private String name;
+    private String address;
+    private Long pinCode;
+    private Long monthlyIncome;
+    private String occupation;
+    private Long adultMembers;
+    private Long childMembers;
+    private Long earningMembers;
+    private Boolean activeStatus = true;
+
+    /**
+     * userRole: user, admin, superAdmin
+     */
     String userRole = "user";
 
     public Boolean getActiveStatus() {
@@ -50,12 +54,12 @@ public class UserModel {
         this.phone = phone;
     }
 
-    public Timestamp getTimeStamp() {
-        return timeStamp;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimeStamp(Timestamp timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getName() {
