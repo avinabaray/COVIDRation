@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#512DA8</color>
+    <color name="colorPrimaryDark">#331E66</color>
+    <color name="colorAccent">#DF2B6C</color>
+    <color name="sellerSelector">#7332E6</color>
+    <color name="customerSelector">#7332E6</color>
+    <color name="customer_text">#6D6D6D</color>
+    <color name="splash_bg">#1375bc</color>
+    <color name="splash_bg_white">#FFFFFF</color>
+    <color name="login_register_btn">#673AB7</color>
 </resources>

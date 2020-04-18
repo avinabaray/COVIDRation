@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">COVID Ration</string>
+
+    <string name="phone">phone</string>
+    <string name="otp">OTP</string>
+    <string name="loginButton">Login</string>
+    <string name="registerUser">New User? Register Now</string>
+    <string name="registerButton">Register</string>
+    <string name="logoutMenuOption">📤Logout</string>
+    <string name="helpMenuOption">❓Help</string>
+    <string name="write_a_comment">Write a comment...</string>
+    <string name="getOtp">Get OTP</string>
+    <string name="name">name</string>
+
 </resources>
