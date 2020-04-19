@@ -448,18 +448,17 @@
                         android:orientation="horizontal"
                         >
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/rejectBtn"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             app:strokeColor="@color/colorPrimary"
                             android:text="Reject"
-                            android:textColor="@color/white"
                             android:backgroundTint="@color/reject_red"
                             />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/approveBtn"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -467,18 +466,16 @@
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:text="Approve"
-                            android:textColor="@color/white"
                             android:backgroundTint="@color/approve_orange"
                             />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/deliveredBtn"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             app:strokeColor="@color/colorPrimary"
                             android:text="Issued"
-                            android:textColor="@color/white"
                             android:backgroundTint="@color/delivered_green"
                             />
 

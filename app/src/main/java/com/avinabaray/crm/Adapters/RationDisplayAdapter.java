@@ -19,6 +19,8 @@ import com.avinabaray.crm.Models.UserModel;
 import com.avinabaray.crm.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -61,6 +63,46 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
         holder.rationItemsRecy.setAdapter(itemDisplayAdapter);
         holder.rationItemsRecy.setLayoutManager(new LinearLayoutManager(mActivity));
 
+        holder.approveBtn.setEnabled(true);
+        holder.deliveredBtn.setEnabled(true);
+        holder.rejectBtn.setEnabled(true);
+
+        if (rationRequestModels.get(position).getRequestStatus().equals(RationRequestModel.APPROVED)) {
+            holder.approveBtn.setEnabled(false);
+        } else if (rationRequestModels.get(position).getRequestStatus().equals(RationRequestModel.DELIVERED)) {
+            holder.deliveredBtn.setEnabled(false);
+        } else if (rationRequestModels.get(position).getRequestStatus().equals(RationRequestModel.REJECTED)) {
+            holder.rejectBtn.setEnabled(false);
+        }
+
+        final RationRequestModel toAddRationModel = rationRequestModels.get(position);
+        holder.rejectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toAddRationModel.setRequestStatus(RationRequestModel.REJECTED);
+                toAddRationModel.setResponseTime(Timestamp.now());
+                updateRationModel(toAddRationModel);
+            }
+        });
+
+        holder.approveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toAddRationModel.setRequestStatus(RationRequestModel.APPROVED);
+                toAddRationModel.setResponseTime(Timestamp.now());
+                updateRationModel(toAddRationModel);
+            }
+        });
+
+        holder.deliveredBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toAddRationModel.setRequestStatus(RationRequestModel.DELIVERED);
+                toAddRationModel.setResponseTime(Timestamp.now());
+                updateRationModel(toAddRationModel);
+            }
+        });
+
         FirebaseFirestore.getInstance().collection("users")
                 .document(currUserId)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -86,6 +128,19 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
 
     }
 
+//    private void setEnableButton(MaterialButton approveBtn, boolean setEnabled) {
+//        if (setEnabled) {
+            // set dynamic color here
+//        }
+//    }
+
+    private void updateRationModel(RationRequestModel toAddRationModel) {
+        FirebaseFirestore.getInstance()
+                .collection("rationRequest")
+                .document(toAddRationModel.getId())
+                .set(toAddRationModel);
+    }
+
     @Override
     public int getItemCount() {
         return rationRequestModels.size();
@@ -95,7 +150,7 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
 
         TextView name, phone, address, occupation, pinCode, monthlyIncome, adults, children, earningMembers;
         RecyclerView rationItemsRecy;
-        Button rejectBtn, approveBtn, deliveredBtn;
+        MaterialButton rejectBtn, approveBtn, deliveredBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
