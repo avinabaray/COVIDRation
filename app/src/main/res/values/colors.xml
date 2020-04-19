@@ -11,4 +11,9 @@
     <color name="login_register_btn">#673AB7</color>
     <color name="white">#FFFFFF</color>
     <color name="text_grey">#454545</color>
+    <color name="approve_orange">#FF6332</color>
+    <color name="reject_red">#D30000</color>
+    <color name="delivered_green">#1BAC22</color>
+    <color name="black">#000000</color>
+    <color name="bg_grey">#D7C0FF</color>
 </resources>

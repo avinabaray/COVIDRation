@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recyclerItemLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="false"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:elevation="15dp"
+        app:cardCornerRadius="7dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:rowCount="3"
+                        android:columnCount="2"
+                        >
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="3"
+                            android:layout_rowWeight="1"
+                            android:layout_row="0"
+                            android:layout_column="0"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Name"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:orientation="vertical"
+                            android:layout_row="0"
+                            android:layout_column="1"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Phone"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/phone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="3"
+                            android:layout_rowWeight="1"
+                            android:layout_row="1"
+                            android:layout_column="0"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Address"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:layout_row="1"
+                            android:layout_column="1"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Occupation"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/occupation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="3"
+                            android:layout_rowWeight="1"
+                            android:layout_row="2"
+                            android:layout_column="0"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="PIN Code"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/pinCode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:layout_row="2"
+                            android:layout_column="1"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Income"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/monthlyIncome"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                    </GridLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Family Members"
+                        android:textColor="@color/text_grey"
+                        android:textSize="@dimen/item_text_size"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="18dp"
+                        />
+
+                    <View
+                        android:layout_width="200dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="@color/colorAccent" />
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:rowCount="3"
+                        android:columnCount="3"
+                        >
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:layout_row="0"
+                            android:layout_column="0"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Adults"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/adults"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:layout_row="0"
+                            android:layout_column="1"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Children"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/children"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:layout_row="0"
+                            android:layout_column="2"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:layout_weight="3"
+                                android:text="Earning"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/earningMembers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+
+                        <!--<LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="3"
+                            android:layout_rowWeight="1"
+                            android:layout_row="2"
+                            android:layout_column="0"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="PIN Code"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewItemCatg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:layout_row="2"
+                            android:layout_column="1"
+                            >
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Income"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewItemCatg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="TextView"
+                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+-->
+                    </GridLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Requested Ration Supplies"
+                        android:textColor="@color/text_grey"
+                        android:textSize="@dimen/item_text_size"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="18dp"
+                        />
+
+                    <View
+                        android:layout_width="300dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="@color/colorAccent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rationItemsRecy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="3"
+                        android:orientation="horizontal"
+                        >
+
+                        <Button
+                            android:id="@+id/rejectBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:strokeColor="@color/colorPrimary"
+                            android:text="Reject"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/reject_red"
+                            />
+
+                        <Button
+                            android:id="@+id/approveBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:text="Approve"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/approve_orange"
+                            />
+
+                        <Button
+                            android:id="@+id/deliveredBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:strokeColor="@color/colorPrimary"
+                            android:text="Issued"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/delivered_green"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

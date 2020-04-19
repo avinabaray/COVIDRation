@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                             intent = new Intent(mActivity, UserDashActivity.class);
                                             break;
                                         case "admin":
-                                            intent = new Intent(mActivity, SuperAdminDashActivity.class);
+                                            intent = new Intent(mActivity, AdminActivity.class);
                                             break;
                                         case "superAdmin":
                                             intent = new Intent(mActivity, SuperAdminDashActivity.class);

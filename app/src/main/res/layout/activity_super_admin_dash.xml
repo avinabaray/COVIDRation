@@ -13,30 +13,46 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:cornerRadius="6dp"
-            android:onClick="editItemList"
-            android:text="Edit Item List"
-            />
+            android:orientation="horizontal"
+            >
 
-        <View
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cornerRadius="6dp"
+                android:onClick="editItemList"
+                android:text="Edit Item List"
+                />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cornerRadius="6dp"
+                android:onClick="editUsers"
+                android:text="Edit Users"
+                />
+
+        </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             app:cornerRadius="6dp"
-            android:onClick="editUsers"
-            android:text="Edit Users"
+            android:onClick="viewRationRequests"
+            android:text="View Ration Requests"
             />
 
     </LinearLayout>

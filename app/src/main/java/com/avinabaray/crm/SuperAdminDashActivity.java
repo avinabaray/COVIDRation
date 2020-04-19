@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class SuperAdminDashActivity extends AppCompatActivity {
+public class SuperAdminDashActivity extends BaseActivity {
 
     private Activity mActivity;
 
@@ -25,5 +25,10 @@ public class SuperAdminDashActivity extends AppCompatActivity {
 
     public void editUsers(View view) {
 
+    }
+
+    public void viewRationRequests(View view) {
+        Intent i = new Intent(mActivity, AdminActivity.class);
+        startActivity(i);
     }
 }
