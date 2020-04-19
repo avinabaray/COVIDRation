@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class SuperAdminDashActivity extends BaseActivity {
 
@@ -31,5 +32,9 @@ public class SuperAdminDashActivity extends BaseActivity {
     public void viewRationRequests(View view) {
         Intent i = new Intent(mActivity, AdminActivity.class);
         startActivity(i);
+    }
+
+    public void test(View view) {
+        Toast.makeText(mActivity, MainActivity.CURRENT_USER_MODEL.getName(), Toast.LENGTH_SHORT).show();
     }
 }

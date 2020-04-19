@@ -42,6 +42,11 @@ public class UserDashActivity extends BaseActivity {
     ArrayList<String> itemUnits = new ArrayList<>();
 
     @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_dashboard);

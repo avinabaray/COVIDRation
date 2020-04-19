@@ -100,10 +100,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        commonMethods.loadingDialogStart(mActivity, "Logging in...");
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        commonMethods.loadingDialogStop();
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             commonMethods.loadingDialogStop();
@@ -191,12 +193,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-
+            commonMethods.loadingDialogStart(mActivity);
             mDocRef.whereEqualTo("phone", MainActivity.CURRENT_PHONE)
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            commonMethods.loadingDialogStop();
                             editor.putString("CURRENT_PHONE", MainActivity.CURRENT_PHONE);
                             editor.putBoolean("isFirstRun", false);
                             editor.apply();
@@ -204,6 +207,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // New user. Get all details from user here
                                 Intent i = new Intent(mActivity, RegisterUserActivity.class);
                                 startActivity(i);
+                                finish();
                             } else {
                                 // Exiting user
                                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
@@ -234,12 +238,14 @@ public class LoginActivity extends AppCompatActivity {
                                             intent = new Intent(mActivity, UserDashActivity.class);
                                     }
                                     startActivity(intent);
+                                    finish();
                                 }
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    commonMethods.loadingDialogStop();
                     Toast.makeText(mActivity, "Something went wrong...", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "onFailure: ", e);
                 }

@@ -42,6 +42,7 @@ public class CommonMethods {
         pd = new ProgressDialog(context);
         pd.setMessage("Please wait...");
         pd.show();
+        pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
     }
 
@@ -54,6 +55,7 @@ public class CommonMethods {
         pd = new ProgressDialog(context);
         pd.setMessage(message);
         pd.show();
+        pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
     }
 

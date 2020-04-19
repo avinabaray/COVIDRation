@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                                 // New user. Get all details from user here
                                 Intent i = new Intent(mActivity, RegisterUserActivity.class);
                                 startActivity(i);
+                                finish();
                             } else {
                                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                     MainActivity.CURRENT_USER_MODEL = documentSnapshot.toObject(UserModel.class);
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 //                                        intent = new Intent(mActivity, RegisterUserActivity.class);
 //                                    }
                                     startActivity(intent);
-
+                                    finish();
                                 }
 
                             }
