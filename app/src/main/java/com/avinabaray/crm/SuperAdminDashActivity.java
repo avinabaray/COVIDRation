@@ -24,7 +24,8 @@ public class SuperAdminDashActivity extends BaseActivity {
     }
 
     public void editUsers(View view) {
-
+        Intent i = new Intent(mActivity, EditUsersActivity.class);
+        startActivity(i);
     }
 
     public void viewRationRequests(View view) {

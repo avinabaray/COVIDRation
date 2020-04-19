@@ -63,48 +63,53 @@ public class UserDashActivity extends BaseActivity {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            if (Objects.equals(documentSnapshot.get("requestStatus"), RationRequestModel.PENDING)) {
-                                addRationRequestBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        commonMethods.createAlert(new AlertDialog.Builder(mActivity),
-                                                "You already have a Pending Request.");
-                                    }
-                                });
-                            } else {
-                                addRationRequestBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        commonMethods.loadingDialogStart(mActivity, getString(R.string.fetch_item_list));
-                                        FirebaseFirestore.getInstance()
-                                                .collection("fields")
-                                                .document("itemNames")
-                                                .get()
-                                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                        commonMethods.loadingDialogStop();
-                                                        itemNames = (ArrayList<String>) documentSnapshot.get("itemNames");
-                                                        itemUnits = (ArrayList<String>) documentSnapshot.get("itemUnits");
+                        if (queryDocumentSnapshots != null) {
+                            addRationRequestBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+//                                    Toast.makeText(mActivity, "DONE", Toast.LENGTH_SHORT).show();
+                                    commonMethods.loadingDialogStart(mActivity, getString(R.string.fetch_item_list));
+                                    FirebaseFirestore.getInstance()
+                                            .collection("fields")
+                                            .document("itemNames")
+                                            .get()
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    commonMethods.loadingDialogStop();
+                                                    itemNames = (ArrayList<String>) documentSnapshot.get("itemNames");
+                                                    itemUnits = (ArrayList<String>) documentSnapshot.get("itemUnits");
 
-                                                        AddRationDialog addRationDialog = new AddRationDialog(mActivity, itemNames, itemUnits, rootLayout);
-                                                        addRationDialog.setCanceledOnTouchOutside(false);
-                                                        addRationDialog.show();
+                                                    AddRationDialog addRationDialog = new AddRationDialog(mActivity, itemNames, itemUnits, rootLayout);
+                                                    addRationDialog.setCanceledOnTouchOutside(false);
+                                                    addRationDialog.show();
 
-                                                    }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                commonMethods.loadingDialogStop();
-                                                Toast.makeText(mActivity, R.string.oops_error, Toast.LENGTH_SHORT).show();
-                                                Log.e(TAG, "onFailure: ", e);
-                                            }
-                                        });
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            commonMethods.loadingDialogStop();
+                                            Toast.makeText(mActivity, R.string.oops_error, Toast.LENGTH_SHORT).show();
+                                            Log.e(TAG, "onFailure: ", e);
+                                        }
+                                    });
 
 
-                                    }
-                                });
+                                }
+                            });
+//                            Toast.makeText(mActivity, String.valueOf(queryDocumentSnapshots.size()), Toast.LENGTH_SHORT).show();
+                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                if (Objects.equals(documentSnapshot.get("requestStatus"), RationRequestModel.PENDING) ||
+                                        Objects.equals(documentSnapshot.get("requestStatus"), RationRequestModel.APPROVED)) {
+                                    addRationRequestBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+//                                            Toast.makeText(mActivity, "DONE", Toast.LENGTH_SHORT).show();
+                                            commonMethods.createAlert(new AlertDialog.Builder(mActivity),
+                                                    "We are processing your Pending Request");
+                                        }
+                                    });
+                                }
                             }
                         }
                     }

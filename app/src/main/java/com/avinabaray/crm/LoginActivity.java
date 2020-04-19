@@ -218,17 +218,21 @@ public class LoginActivity extends AppCompatActivity {
 //                                    MainActivity.details1Uploaded = documentSnapshot.getBoolean("details1Uploaded");
 //                                    MainActivity.photo2Uploaded = documentSnapshot.getBoolean("details2Uploaded");
 
-                                    Intent intent = new Intent(mActivity, UserDashActivity.class);
-//                                    if (MainActivity.details1Uploaded && MainActivity.photo2Uploaded) {
-//                                        // Intent to Dashboard
-//                                        intent = new Intent(mActivity, DashboardActivity.class);
-//                                    } else if (MainActivity.details1Uploaded) {
-//                                        // Intent to photo upload page
-//                                        intent = new Intent(mActivity, RegisterStage2Activity.class);
-//                                    } else {
-//                                        // Intent to details fill page
-//                                        intent = new Intent(mActivity, RegisterUserActivity.class);
-//                                    }
+                                    Intent intent;
+
+                                    switch (MainActivity.CURRENT_USER_MODEL.getUserRole()) {
+                                        case "user":
+                                            intent = new Intent(mActivity, UserDashActivity.class);
+                                            break;
+                                        case "admin":
+                                            intent = new Intent(mActivity, AdminActivity.class);
+                                            break;
+                                        case "superAdmin":
+                                            intent = new Intent(mActivity, SuperAdminDashActivity.class);
+                                            break;
+                                        default:
+                                            intent = new Intent(mActivity, UserDashActivity.class);
+                                    }
                                     startActivity(intent);
                                 }
                             }

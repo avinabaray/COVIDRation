@@ -15,5 +15,5 @@
     <color name="reject_red">#D30000</color>
     <color name="delivered_green">#1BAC22</color>
     <color name="black">#000000</color>
-    <color name="bg_grey">#D7C0FF</color>
+    <color name="bg_grey">#EEE4FF</color>
 </resources>

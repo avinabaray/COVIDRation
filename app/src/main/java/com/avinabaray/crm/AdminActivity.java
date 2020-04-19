@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avinabaray.crm.Adapters.RationDisplayAdapter;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class AdminActivity extends BaseActivity {
     private ArrayList<String> categories = new ArrayList<String>();
     private Activity mActivity = this;
     private RecyclerView requestsRecy;
+    private TextView requestsCount;
 
 
     @Override
@@ -41,10 +44,11 @@ public class AdminActivity extends BaseActivity {
 
         categorySpinner = findViewById(R.id.categorySpinner);
         requestsRecy = findViewById(R.id.requestsRecy);
+        requestsCount = findViewById(R.id.requestsCount);
 
         categories.add("Pending");
         categories.add("Approved");
-        categories.add("Delivered");
+        categories.add("Issued");
         categories.add("Rejected");
 
         spinnerPos.add(0L);
@@ -83,17 +87,22 @@ public class AdminActivity extends BaseActivity {
         final ArrayList<RationRequestModel> currRationModel = new ArrayList<>();
 
         FirebaseFirestore.getInstance().collection("rationRequest")
+                .orderBy("requestTime", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                        Toast.makeText(mActivity, String.valueOf(queryDocumentSnapshots.size()), Toast.LENGTH_SHORT).show();
+                        currRationModel.clear();
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            currRationModel.clear();
                             RationRequestModel tempRationModel = documentSnapshot.toObject(RationRequestModel.class);
+                            Log.wtf("STATUS", String.valueOf(tempRationModel.getRequestStatus()));
                             if (tempRationModel.getRequestStatus().equals(requestStatus)) {
+                                Log.wtf("STATUS", String.valueOf(tempRationModel.getRequestStatus()));
                                 currRationModel.add(documentSnapshot.toObject(RationRequestModel.class));
                             }
                         }
 
+                        requestsCount.setText(String.valueOf(currRationModel.size()) + " request(s)");
                         Log.wtf("ADPT_SIZE", String.valueOf(currRationModel.size()));
                         RationDisplayAdapter rationDisplayAdapter = new RationDisplayAdapter(mActivity, currRationModel);
                         requestsRecy.setAdapter(rationDisplayAdapter);
