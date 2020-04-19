@@ -11,6 +11,7 @@
     <string name="write_a_comment">Write a comment…</string>
     <string name="getOtp">Get OTP</string>
     <string name="name">name</string>
+    <string name="fetch_item_list">Fetching Item List</string>
     <string name="oops_error">Oops… Something went wrong</string>
 
 </resources>

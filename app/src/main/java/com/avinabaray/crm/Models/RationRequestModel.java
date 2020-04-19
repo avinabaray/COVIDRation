@@ -6,6 +6,11 @@ import java.util.ArrayList;
 
 public class RationRequestModel {
 
+    public static final Long PENDING = 0L;
+    public static final Long APPROVED = 1L;
+    public static final Long DELIVERED = 2L;
+    public static final Long REJECTED = 3L;
+
     private String id;
     private String userName;
     private String userId;
@@ -17,7 +22,16 @@ public class RationRequestModel {
     private ArrayList<String> itemUnits = new ArrayList<>();
     private ArrayList<Long> itemQtys = new ArrayList<>();
     private Long pinCode;
-    private Timestamp timestamp;
+    private Timestamp requestTime;
+    private Timestamp responseTime;
+
+    /**
+     * 0 = PENDING<br>
+     * 1 = APPROVED<br>
+     * 2 = DELIVERED<br>
+     * 3 = REJECTED
+     */
+    private Long requestStatus = PENDING;
 
     public String getId() {
         return id;
@@ -83,11 +97,27 @@ public class RationRequestModel {
         this.pinCode = pinCode;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Timestamp getRequestTime() {
+        return requestTime;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setRequestTime(Timestamp requestTime) {
+        this.requestTime = requestTime;
+    }
+
+    public Timestamp getResponseTime() {
+        return responseTime;
+    }
+
+    public void setResponseTime(Timestamp responseTime) {
+        this.responseTime = responseTime;
+    }
+
+    public Long getRequestStatus() {
+        return requestStatus;
+    }
+
+    public void setRequestStatus(Long requestStatus) {
+        this.requestStatus = requestStatus;
     }
 }

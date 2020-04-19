@@ -46,7 +46,7 @@ public class UserDashActivity extends BaseActivity {
         addRationRequestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commonMethods.loadingDialogStart(mActivity, "Fetching Item List");
+                commonMethods.loadingDialogStart(mActivity, getString(R.string.fetch_item_list));
                 FirebaseFirestore.getInstance()
                         .collection("fields")
                         .document("itemNames")

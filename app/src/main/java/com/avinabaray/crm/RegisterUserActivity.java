@@ -28,7 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class RegisterUserActivity extends AppCompatActivity {
+public class RegisterUserActivity extends BaseActivity {
 
     private static final String TAG = "RegisterAct";
     EditText editTextName, editTextAddress, editTextPINCode, editTextIncome;
@@ -179,7 +179,7 @@ public class RegisterUserActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(mActivity, "Successfully Registered", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(mActivity, UserDashActivity.class);
+                        Intent i = new Intent(mActivity, MainActivity.class);
                         startActivity(i);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

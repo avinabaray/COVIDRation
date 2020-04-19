@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <EditText
+        android:id="@+id/itemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="20"
+        android:hint="Item Name"
+        android:textColor="@color/text_grey"
+        android:textSize="@dimen/item_text_size" />
+
+
+    <EditText
+        android:id="@+id/itemUnit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:maxLength="4"
+        android:hint="Ltr"
+        android:textSize="@dimen/item_text_size" />
+
+    <ImageView
+        android:id="@+id/imageViewCloseButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="5dp"
+        app:srcCompat="@drawable/ic_cancel_black_24dp" />
+
+
+</LinearLayout>

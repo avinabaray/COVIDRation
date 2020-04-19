@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditItemListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/topLinLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="40dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="20"
+                    android:gravity="center"
+                    android:text="Item Names"
+                    android:textSize="@dimen/item_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:gravity="center"
+                    android:text="Units"
+                    android:textSize="@dimen/item_text_size"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/itemListRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="50dp"
+                android:paddingBottom="50dp"
+                app:layout_constraintBottom_toTopOf="@id/updateItemListBtn"
+                app:layout_constraintTop_toBottomOf="@+id/topLinLay"
+                app:layout_constraintVertical_bias="0" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addNewItemFab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:backgroundTint="@color/colorAccent"
+                android:src="@drawable/ic_add_white_24dp"
+                app:borderWidth="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:tint="@null" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/updateItemListBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="Update Item List"
+            app:cornerRadius="6dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

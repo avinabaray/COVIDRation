@@ -6,4 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".SuperAdminDashActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cornerRadius="6dp"
+            android:onClick="editItemList"
+            android:text="Edit Item List"
+            />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cornerRadius="6dp"
+            android:onClick="editUsers"
+            android:text="Edit Users"
+            />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

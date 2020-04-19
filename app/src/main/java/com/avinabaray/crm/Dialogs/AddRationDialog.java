@@ -119,8 +119,7 @@ public class AddRationDialog extends Dialog {
                 newRationRequestModel.setItemUnits(itemUnits);
                 newRationRequestModel.setItemQtys(itemQtys);
                 newRationRequestModel.setPinCode(MainActivity.CURRENT_USER_MODEL.getPinCode());
-                newRationRequestModel.setTimestamp(Timestamp.now());
-
+                newRationRequestModel.setRequestTime(Timestamp.now());
                 commonMethods.loadingDialogStart(mActivity);
                 mDocRef.set(newRationRequestModel)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

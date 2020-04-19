@@ -90,8 +90,21 @@ public class MainActivity extends AppCompatActivity {
 //                                    Toast.makeText(mActivity, "OnSuccess", Toast.LENGTH_SHORT).show();
 //                                    details1Uploaded = documentSnapshot.getBoolean("details1Uploaded");
 //                                    photo2Uploaded = documentSnapshot.getBoolean("details2Uploaded");
+                                    Intent intent;
 
-                                    Intent intent = new Intent(mActivity, UserDashActivity.class);
+                                    switch (MainActivity.CURRENT_USER_MODEL.getUserRole()) {
+                                        case "user":
+                                            intent = new Intent(mActivity, UserDashActivity.class);
+                                            break;
+                                        case "admin":
+                                            intent = new Intent(mActivity, SuperAdminDashActivity.class);
+                                            break;
+                                        case "superAdmin":
+                                            intent = new Intent(mActivity, SuperAdminDashActivity.class);
+                                            break;
+                                        default:
+                                            intent = new Intent(mActivity, UserDashActivity.class);
+                                    }
 //                                    if (details1Uploaded && photo2Uploaded) {
 //                                        // Intent to Dashboard
 //                                        intent = new Intent(mActivity, DashboardActivity.class);
