@@ -100,7 +100,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
                                 android:text="TextView"
-                                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                                android:textColor="@color/text_link"
                                 android:textSize="16sp" />
 
                         </LinearLayout>

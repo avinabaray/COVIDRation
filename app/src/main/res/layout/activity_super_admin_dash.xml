@@ -6,13 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".SuperAdminDashActivity">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="test"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btnsLinLay"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1.2"
+                android:fontFamily="@font/baloo_bhaina"
+                android:gravity="center"
+                android:paddingTop="18dp"
+                android:text="STAY HOME"
+                android:textColor="@color/colorPrimary"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieStayHome"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="stay_home.json"
+                app:lottie_loop="true" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/btnsLinLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

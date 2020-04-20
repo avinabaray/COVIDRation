@@ -1,6 +1,8 @@
 package com.avinabaray.crm.Adapters;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,7 +117,16 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
                             currUserModel = documentSnapshot.toObject(UserModel.class);
 
                             assert currUserModel != null;
-                            holder.phone.setText(currUserModel.getPhone());
+                            holder.phone.setText(currUserModel.getPhone().substring(3, currUserModel.getPhone().length()));
+                            final UserModel finalCurrUserModel = currUserModel;
+                            holder.phone.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                                    callIntent.setData(Uri.parse("tel:" + finalCurrUserModel.getPhone()));
+                                    mActivity.startActivity(callIntent);
+                                }
+                            });
                             holder.address.setText(currUserModel.getAddress());
                             holder.occupation.setText(currUserModel.getOccupation());
                             holder.monthlyIncome.setText("₹ " + String.valueOf(currUserModel.getMonthlyIncome()) + "/month");

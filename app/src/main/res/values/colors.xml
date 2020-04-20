@@ -16,4 +16,5 @@
     <color name="delivered_green">#1BAC22</color>
     <color name="black">#000000</color>
     <color name="bg_grey">#EEE4FF</color>
+    <color name="text_link">#000CC5</color>
 </resources>

@@ -1,6 +1,8 @@
 package com.avinabaray.crm.Adapters;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,9 +55,18 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         holder.name.setText(userModels.get(position).getName());
-        holder.phone.setText(userModels.get(position).getPhone());
-        holder.userRoleSpinner.setAdapter(roleSpinnerAdapter);
+        holder.phone.setText(userModels.get(position).getPhone().substring(3, userModels.get(position).getPhone().length()));
+        final int finalPos = position;
+        holder.phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:" + userModels.get(finalPos).getPhone()));
+                mActivity.startActivity(callIntent);
+            }
+        });holder.userRoleSpinner.setAdapter(roleSpinnerAdapter);
         final boolean[] spinnerFirstCall = {true};
 
         final UserModel toAddUserModel = userModels.get(position);

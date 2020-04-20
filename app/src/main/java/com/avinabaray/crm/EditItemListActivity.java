@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditItemListActivity extends AppCompatActivity {
+public class EditItemListActivity extends BaseActivity {
 
     private static final String TAG = "EditItmAct";
     private RecyclerView itemListRecycler;

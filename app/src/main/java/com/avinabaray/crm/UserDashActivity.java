@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.avinabaray.crm.Dialogs.AddRationDialog;
 import com.avinabaray.crm.Models.RationRequestModel;
 import com.avinabaray.crm.Utils.CommonMethods;
@@ -40,6 +41,7 @@ public class UserDashActivity extends BaseActivity {
     CommonMethods commonMethods = new CommonMethods();
     ArrayList<String> itemNames = new ArrayList<>();
     ArrayList<String> itemUnits = new ArrayList<>();
+    private LottieAnimationView lottieStayHome;
 
     @Override
     public void onBackPressed() {
@@ -54,6 +56,11 @@ public class UserDashActivity extends BaseActivity {
         addRationRequestBtn = findViewById(R.id.addRationRequestBtn);
         rationRecycler = findViewById(R.id.rationRecycler);
         rootLayout = findViewById(R.id.rootLayout);
+        lottieStayHome = findViewById(R.id.lottieStayHome);
+
+        lottieStayHome.enableMergePathsForKitKatAndAbove(true);
+//        lottieStayHome.playAnimation();
+//        lottieStayHome.setRepeatCount(3);
 
         addRationRequestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
