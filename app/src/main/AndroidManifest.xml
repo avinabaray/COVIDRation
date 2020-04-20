@@ -9,14 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditUsersActivity"></activity>
+        <activity android:name=".AboutUsActivity"></activity>
+        <activity android:name=".EditUsersActivity" />
         <activity android:name=".AdminActivity" />
         <activity android:name=".EditItemListActivity" />
         <activity android:name=".SuperAdminDashActivity" />
         <activity android:name=".UserDashActivity" />
         <activity android:name=".RegisterUserActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

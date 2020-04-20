@@ -6,12 +6,13 @@
     <string name="loginButton">Login</string>
     <string name="registerUser">New User? Register Now</string>
     <string name="registerButton">Register</string>
-    <string name="logoutMenuOption">📤Logout</string>
-    <string name="helpMenuOption">❓Help</string>
+    <string name="logoutMenuOption">📤 Logout</string>
+    <string name="helpMenuOption">ℹ️ About Us</string>
     <string name="write_a_comment">Write a comment…</string>
     <string name="getOtp">Get OTP</string>
     <string name="name">name</string>
     <string name="fetch_item_list">Fetching Item List</string>
     <string name="oops_error">Oops… Something went wrong</string>
+    <string name="conn_error">Check your Internet Connection</string>
 
 </resources>

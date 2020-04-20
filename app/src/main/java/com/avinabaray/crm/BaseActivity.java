@@ -22,7 +22,9 @@ public class BaseActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.itemHelp:
-                Toast.makeText(this, "Help and Support will be added soon", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Help and Support will be added soon", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this, AboutUsActivity.class);
+                startActivity(i);
                 break;
 
             case R.id.itemLogout:

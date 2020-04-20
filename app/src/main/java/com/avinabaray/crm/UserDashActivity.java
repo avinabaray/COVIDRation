@@ -2,10 +2,13 @@ package com.avinabaray.crm;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +39,7 @@ public class UserDashActivity extends BaseActivity {
     private Button addRationRequestBtn;
     private RecyclerView rationRecycler;
     private ConstraintLayout rootLayout;
+    private TextView contactUs;
     Activity mActivity = this;
 
     CommonMethods commonMethods = new CommonMethods();
@@ -57,6 +61,33 @@ public class UserDashActivity extends BaseActivity {
         rationRecycler = findViewById(R.id.rationRecycler);
         rootLayout = findViewById(R.id.rootLayout);
         lottieStayHome = findViewById(R.id.lottieStayHome);
+        contactUs = findViewById(R.id.contactUs);
+
+        contactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commonMethods.makeSnack(rootLayout, getString(R.string.conn_error));
+            }
+        });
+
+        FirebaseFirestore.getInstance().collection("fields")
+                .document("contactUs")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable final DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (documentSnapshot != null) {
+                            contactUs.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    String phoneNo = documentSnapshot.getString("phone");
+                                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                                    callIntent.setData(Uri.parse("tel:" + phoneNo));
+                                    mActivity.startActivity(callIntent);
+                                }
+                            });
+                        }
+                    }
+                });
 
         lottieStayHome.enableMergePathsForKitKatAndAbove(true);
 //        lottieStayHome.playAnimation();
