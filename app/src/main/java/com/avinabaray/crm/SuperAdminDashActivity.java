@@ -13,6 +13,13 @@ public class SuperAdminDashActivity extends BaseActivity {
     private Activity mActivity;
 
     @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        finishAffinity();
+        System.exit(0);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;

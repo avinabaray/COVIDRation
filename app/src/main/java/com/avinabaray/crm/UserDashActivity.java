@@ -50,6 +50,9 @@ public class UserDashActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
+//        finish();
+        finishAffinity();
+        System.exit(0);
     }
 
     @Override

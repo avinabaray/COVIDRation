@@ -58,6 +58,14 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
 
     @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+//        finish();
+        finishAffinity();
+        System.exit(0);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
