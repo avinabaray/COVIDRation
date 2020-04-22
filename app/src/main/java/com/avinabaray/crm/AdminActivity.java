@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +39,32 @@ public class AdminActivity extends BaseActivity {
     private Activity mActivity = this;
     private RecyclerView requestsRecy;
     private TextView requestsCount;
+    private RationDisplayAdapter rationDisplayAdapter;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_item, menu);
+        MenuItem searchItem = menu.findItem(R.id.searchBar);
+        searchItem.setVisible(true);
+
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
+        searchView.setQueryHint("PIN Code");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                rationDisplayAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +133,7 @@ public class AdminActivity extends BaseActivity {
 
                         requestsCount.setText(String.valueOf(currRationModel.size()) + " request(s)");
                         Log.wtf("ADPT_SIZE", String.valueOf(currRationModel.size()));
-                        RationDisplayAdapter rationDisplayAdapter = new RationDisplayAdapter(mActivity, currRationModel);
+                        rationDisplayAdapter = new RationDisplayAdapter(mActivity, currRationModel);
                         requestsRecy.setAdapter(rationDisplayAdapter);
                         requestsRecy.setLayoutManager(new LinearLayoutManager(mActivity));
 

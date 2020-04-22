@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,15 +32,17 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 
-public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdapter.ViewHolder> {
+public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdapter.ViewHolder> implements Filterable {
 
     private static final String TAG = "RtnDispAdpt";
     private Activity mActivity;
     private ArrayList<RationRequestModel> rationRequestModels;
+    private ArrayList<RationRequestModel> rationRequestModelsFull;
 
     public RationDisplayAdapter(Activity mActivity, ArrayList<RationRequestModel> rationRequestModels) {
         this.mActivity = mActivity;
         this.rationRequestModels = rationRequestModels;
+        rationRequestModelsFull = new ArrayList<>(rationRequestModels);
     }
 
     @NonNull
@@ -158,6 +162,41 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
     public int getItemCount() {
         return rationRequestModels.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            ArrayList<RationRequestModel> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(rationRequestModelsFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (RationRequestModel item : rationRequestModelsFull) {
+                    if (String.valueOf(item.getPinCode()).toLowerCase().startsWith(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            rationRequestModels.clear();
+            rationRequestModels.addAll((ArrayList) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

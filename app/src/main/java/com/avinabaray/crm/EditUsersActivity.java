@@ -7,7 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import com.avinabaray.crm.Adapters.UsersAdapter;
 import com.avinabaray.crm.Models.UserModel;
@@ -26,6 +30,31 @@ public class EditUsersActivity extends BaseActivity {
     private ArrayList<UserModel> userModels = new ArrayList<>();
     private ArrayList<String> userRoles = new ArrayList<>();
     private Activity mActivity = this;
+    private UsersAdapter usersAdapter;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_item, menu);
+        MenuItem searchItem = menu.findItem(R.id.searchBar);
+        searchItem.setVisible(true);
+
+        SearchView searchView = (SearchView) searchItem.getActionView();
+//        searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
+        searchView.setQueryHint("User Name");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                usersAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +78,7 @@ public class EditUsersActivity extends BaseActivity {
                                 userModels.add(documentSnapshot.toObject(UserModel.class));
                             }
 
-                            UsersAdapter usersAdapter = new UsersAdapter(mActivity, userModels, userRoles);
+                            usersAdapter = new UsersAdapter(mActivity, userModels, userRoles);
                             usersRecy.setAdapter(usersAdapter);
                             usersRecy.setLayoutManager(new LinearLayoutManager(mActivity));
 

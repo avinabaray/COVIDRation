@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +25,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
+public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> implements Filterable {
 
     Activity mActivity;
     private ArrayList<UserModel> userModels = new ArrayList<>();
+    private ArrayList<UserModel> userModelsFull;
     private ArrayList<String> userRoles;
     private ArrayAdapter<String> roleSpinnerAdapter;
 
@@ -34,6 +37,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         this.mActivity = mActivity;
         this.userModels = userModels;
         this.userRoles = userRoles;
+        userModelsFull = new ArrayList<>(userModels);
     }
 
     @NonNull
@@ -123,6 +127,42 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     public int getItemCount() {
         return userModels.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return userNameFilter;
+    }
+
+    private Filter userNameFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            ArrayList<UserModel> filteredUserList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredUserList.addAll(userModelsFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (UserModel item : userModelsFull) {
+                    if (String.valueOf(item.getName()).toLowerCase().contains(filterPattern)) {
+                        filteredUserList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredUserList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            userModels.clear();
+            userModels.addAll((ArrayList) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
