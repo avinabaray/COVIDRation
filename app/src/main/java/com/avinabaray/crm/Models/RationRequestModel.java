@@ -14,8 +14,11 @@ public class RationRequestModel {
     private String id;
     private String userName;
     private String userId;
+
     /**
      * userRole: user, admin, superAdmin
+     * <br>
+     * admin is displayed as Volunteer
      */
     private String userRole;
     private ArrayList<String> itemNames = new ArrayList<>();
@@ -24,6 +27,12 @@ public class RationRequestModel {
     private Long pinCode;
     private Timestamp requestTime;
     private Timestamp responseTime;
+    private Timestamp approveTime;
+    private Timestamp deliverTime;
+    private Timestamp rejectTime;
+    private String approvedBy;
+    private String deliveredBy;
+    private String rejectedBy;
 
     /**
      * 0 = PENDING<br>
@@ -119,5 +128,53 @@ public class RationRequestModel {
 
     public void setRequestStatus(Long requestStatus) {
         this.requestStatus = requestStatus;
+    }
+
+    public Timestamp getApproveTime() {
+        return approveTime;
+    }
+
+    public void setApproveTime(Timestamp approveTime) {
+        this.approveTime = approveTime;
+    }
+
+    public Timestamp getDeliverTime() {
+        return deliverTime;
+    }
+
+    public void setDeliverTime(Timestamp deliverTime) {
+        this.deliverTime = deliverTime;
+    }
+
+    public Timestamp getRejectTime() {
+        return rejectTime;
+    }
+
+    public void setRejectTime(Timestamp rejectTime) {
+        this.rejectTime = rejectTime;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public String getDeliveredBy() {
+        return deliveredBy;
+    }
+
+    public void setDeliveredBy(String deliveredBy) {
+        this.deliveredBy = deliveredBy;
+    }
+
+    public String getRejectedBy() {
+        return rejectedBy;
+    }
+
+    public void setRejectedBy(String rejectedBy) {
+        this.rejectedBy = rejectedBy;
     }
 }

@@ -19,6 +19,8 @@ public class UserModel {
 
     /**
      * userRole: user, admin, superAdmin
+     * <br>
+     * admin is displayed as Volunteer
      */
     String userRole = "user";
 

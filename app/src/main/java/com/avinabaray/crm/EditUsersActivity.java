@@ -64,7 +64,7 @@ public class EditUsersActivity extends BaseActivity {
         usersRecy = findViewById(R.id.usersRecy);
 
         userRoles.add("User");
-        userRoles.add("Admin");
+        userRoles.add("Volunteer");
         userRoles.add("Super Admin");
 
         FirebaseFirestore.getInstance().collection("users")

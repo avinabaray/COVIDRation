@@ -1,5 +1,6 @@
 package com.avinabaray.crm.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,22 +8,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.avinabaray.crm.MainActivity;
 import com.avinabaray.crm.Models.RationRequestModel;
 import com.avinabaray.crm.Models.UserModel;
 import com.avinabaray.crm.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -53,6 +52,7 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
         return holder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
@@ -75,6 +75,42 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
         holder.deliveredBtn.setEnabled(true);
         holder.rejectBtn.setEnabled(true);
 
+        holder.notesLinLay.setVisibility(View.GONE);
+        if (rationRequestModels.get(position).getApprovedBy() != null) {
+            holder.notesLinLay.setVisibility(View.VISIBLE);
+            holder.approvedTextView.setVisibility(View.VISIBLE);
+            holder.approvedTextView.setText("Approved by " +
+                    rationRequestModels.get(position).getApprovedBy() +
+                    " on " +
+                    getFormattedDateTime(rationRequestModels.get(position).getApproveTime())
+            );
+        } else {
+            holder.approvedTextView.setVisibility(View.GONE);
+        }
+
+        if (rationRequestModels.get(position).getDeliveredBy() != null) {
+            holder.notesLinLay.setVisibility(View.VISIBLE);
+            holder.deliveredTextView.setVisibility(View.VISIBLE);
+            holder.deliveredTextView.setText("Issued by " +
+                    rationRequestModels.get(position).getDeliveredBy() +
+                    " on " +
+                    getFormattedDateTime(rationRequestModels.get(position).getDeliverTime())
+            );
+        } else {
+            holder.deliveredTextView.setVisibility(View.GONE);
+        }
+
+        if (rationRequestModels.get(position).getRejectedBy() != null) {
+            holder.notesLinLay.setVisibility(View.VISIBLE);
+            holder.rejectedTextView.setVisibility(View.VISIBLE);
+            holder.rejectedTextView.setText("Rejected by " +
+                    rationRequestModels.get(position).getRejectedBy() +
+                    " on " +
+                    getFormattedDateTime(rationRequestModels.get(position).getRejectTime()));
+        } else {
+            holder.rejectedTextView.setVisibility(View.GONE);
+        }
+
         if (rationRequestModels.get(position).getRequestStatus().equals(RationRequestModel.APPROVED)) {
             holder.approveBtn.setEnabled(false);
         } else if (rationRequestModels.get(position).getRequestStatus().equals(RationRequestModel.DELIVERED)) {
@@ -83,12 +119,17 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
             holder.rejectBtn.setEnabled(false);
         }
 
+        holder.requestDateTextView.setText(getFormattedDate(rationRequestModels.get(position).getRequestTime()));
+        holder.requestTimeTextView.setText(getFormattedTime(rationRequestModels.get(position).getRequestTime()));
+
         final RationRequestModel toAddRationModel = rationRequestModels.get(position);
         holder.rejectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toAddRationModel.setRequestStatus(RationRequestModel.REJECTED);
                 toAddRationModel.setResponseTime(Timestamp.now());
+                toAddRationModel.setRejectTime(Timestamp.now());
+                toAddRationModel.setRejectedBy(MainActivity.CURRENT_USER_MODEL.getName());
                 updateRationModel(toAddRationModel);
             }
         });
@@ -98,6 +139,8 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
             public void onClick(View v) {
                 toAddRationModel.setRequestStatus(RationRequestModel.APPROVED);
                 toAddRationModel.setResponseTime(Timestamp.now());
+                toAddRationModel.setApproveTime(Timestamp.now());
+                toAddRationModel.setApprovedBy(MainActivity.CURRENT_USER_MODEL.getName());
                 updateRationModel(toAddRationModel);
             }
         });
@@ -107,6 +150,8 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
             public void onClick(View v) {
                 toAddRationModel.setRequestStatus(RationRequestModel.DELIVERED);
                 toAddRationModel.setResponseTime(Timestamp.now());
+                toAddRationModel.setDeliverTime(Timestamp.now());
+                toAddRationModel.setDeliveredBy(MainActivity.CURRENT_USER_MODEL.getName());
                 updateRationModel(toAddRationModel);
             }
         });
@@ -145,9 +190,84 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
 
     }
 
+    /**
+     * Formats the Firebase Timestamp object in a readable format
+     *
+     * @param timestamp Firebase Timestamp Object
+     * @return String in DD-MM-YYYY, HH:MM(AM/PM) format
+     */
+    private String getFormattedDateTime(Timestamp timestamp) {
+        String dateTimeString = "";
+        String timeSuffix;
+        if (timestamp.toDate().getDate() < 10) {
+            dateTimeString += "0" + timestamp.toDate().getDate() + "-";
+        } else {
+            dateTimeString += timestamp.toDate().getDate() + "-";
+        }
+        if (timestamp.toDate().getMonth() < 10) {
+            dateTimeString += "0" + (timestamp.toDate().getMonth() + 1) + "-";
+        } else {
+            dateTimeString += (timestamp.toDate().getMonth() + 1) + "-";
+        }
+        dateTimeString += String.valueOf(timestamp.toDate().getYear() + 1900) + ", ";
+        if (timestamp.toDate().getHours() > 12) {
+            dateTimeString += timestamp.toDate().getHours() - 12 + ":";
+            timeSuffix = "PM";
+        } else {
+            dateTimeString += timestamp.toDate().getHours() + ":";
+            timeSuffix = "AM";
+        }
+        if (timestamp.toDate().getMinutes() < 10) {
+            dateTimeString += "0" + timestamp.toDate().getMinutes();
+        } else {
+            dateTimeString += timestamp.toDate().getMinutes();
+        }
+        dateTimeString += timeSuffix;
+
+        return dateTimeString;
+    }
+
+    private String getFormattedDate(Timestamp timestamp) {
+        String dateString = "";
+        if (timestamp.toDate().getDate() < 10) {
+            dateString += "0" + timestamp.toDate().getDate() + "-";
+        } else {
+            dateString += timestamp.toDate().getDate() + "-";
+        }
+        if (timestamp.toDate().getMonth() < 10) {
+            dateString += "0" + (timestamp.toDate().getMonth() + 1) + "-";
+        } else {
+            dateString += (timestamp.toDate().getMonth() + 1) + "-";
+        }
+        dateString += String.valueOf(timestamp.toDate().getYear() + 1900);
+
+        return dateString;
+    }
+
+    private String getFormattedTime(Timestamp timestamp) {
+        String timeString = "";
+        String timeSuffix;
+
+        if (timestamp.toDate().getHours() > 12) {
+            timeString += timestamp.toDate().getHours() - 12 + ":";
+            timeSuffix = "PM";
+        } else {
+            timeString += timestamp.toDate().getHours() + ":";
+            timeSuffix = "AM";
+        }
+        if (timestamp.toDate().getMinutes() < 10) {
+            timeString += "0" + timestamp.toDate().getMinutes();
+        } else {
+            timeString += timestamp.toDate().getMinutes();
+        }
+        timeString += timeSuffix;
+
+        return timeString;
+    }
+
 //    private void setEnableButton(MaterialButton approveBtn, boolean setEnabled) {
 //        if (setEnabled) {
-            // set dynamic color here
+    // set dynamic color here
 //        }
 //    }
 
@@ -201,8 +321,10 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, phone, address, occupation, pinCode, monthlyIncome, adults, children, earningMembers;
+        TextView approvedTextView, deliveredTextView, rejectedTextView, requestDateTextView, requestTimeTextView;
         RecyclerView rationItemsRecy;
         MaterialButton rejectBtn, approveBtn, deliveredBtn;
+        LinearLayout notesLinLay;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -220,6 +342,12 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
             rejectBtn = itemView.findViewById(R.id.rejectBtn);
             approveBtn = itemView.findViewById(R.id.approveBtn);
             deliveredBtn = itemView.findViewById(R.id.deliveredBtn);
+            approvedTextView = itemView.findViewById(R.id.approvedTextView);
+            deliveredTextView = itemView.findViewById(R.id.deliveredTextView);
+            rejectedTextView = itemView.findViewById(R.id.rejectedTextView);
+            notesLinLay = itemView.findViewById(R.id.notesLinLay);
+            requestDateTextView = itemView.findViewById(R.id.requestDateTextView);
+            requestTimeTextView = itemView.findViewById(R.id.requestTimeTextView);
 
 
         }
