@@ -81,12 +81,13 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_margin="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextPhone"
                 app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
                 app:layout_constraintTop_toTopOf="@+id/editTextPhone"
-                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+                android:src="@drawable/ic_name"/>
 
             <EditText
                 android:id="@+id/editTextName"
@@ -109,12 +110,13 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_margin="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextPhone"
                 app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
                 app:layout_constraintTop_toTopOf="@+id/editTextPhone"
-                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+                app:srcCompat="@drawable/ic_address" />
 
             <EditText
                 android:id="@+id/editTextAddress"
@@ -138,12 +140,13 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_margin="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextPhone"
                 app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
                 app:layout_constraintTop_toTopOf="@+id/editTextPhone"
-                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+                app:srcCompat="@drawable/ic_pin_code" />
 
             <EditText
                 android:id="@+id/editTextPINCode"
@@ -167,12 +170,13 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_margin="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextPhone"
                 app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
                 app:layout_constraintTop_toTopOf="@+id/editTextPhone"
-                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+                app:srcCompat="@drawable/ic_income" />
 
             <EditText
                 android:id="@+id/editTextIncome"
@@ -195,12 +199,13 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_margin="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextPhone"
                 app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
                 app:layout_constraintTop_toTopOf="@+id/editTextPhone"
-                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+                app:srcCompat="@drawable/ic_occupation" />
 
             <Spinner
                 android:id="@+id/spinnerOccupation"
@@ -234,12 +239,13 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_margin="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextPhone"
                 app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
                 app:layout_constraintTop_toTopOf="@+id/editTextPhone"
-                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+                app:srcCompat="@drawable/ic_adults" />
 
             <EditText
                 android:id="@+id/editTextAdultMembers"
@@ -262,12 +268,13 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_margin="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextPhone"
                 app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
                 app:layout_constraintTop_toTopOf="@+id/editTextPhone"
-                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+                app:srcCompat="@drawable/ic_child" />
 
             <EditText
                 android:id="@+id/editTextChildMembers"
@@ -290,13 +297,13 @@
             >
 
             <ImageView
-                android:id="@+id/imageViewPhoneIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_margin="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextPhone"
                 app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
                 app:layout_constraintTop_toTopOf="@+id/editTextPhone"
-                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+                app:srcCompat="@drawable/ic_income" />
 
             <EditText
                 android:id="@+id/editTextEarningMembers"
