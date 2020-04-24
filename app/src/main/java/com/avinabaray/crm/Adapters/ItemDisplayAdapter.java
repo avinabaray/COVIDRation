@@ -18,12 +18,12 @@ public class ItemDisplayAdapter extends RecyclerView.Adapter<ItemDisplayAdapter.
     Activity mActivity;
     ArrayList<String> itemNames = new ArrayList<>();
     ArrayList<String> itemUnits = new ArrayList<>();
-    ArrayList<Long> itemQtys = new ArrayList<>();
+    ArrayList<Double> itemQtys = new ArrayList<Double>();
 
     public ItemDisplayAdapter(Activity mActivity,
                               ArrayList<String> itemNames,
                               ArrayList<String> itemUnits,
-                              ArrayList<Long> itemQtys) {
+                              ArrayList<Double> itemQtys) {
         this.mActivity = mActivity;
         this.itemNames = itemNames;
         this.itemUnits = itemUnits;

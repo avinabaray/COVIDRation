@@ -32,7 +32,7 @@ public class AddRationDialog extends Dialog {
     Activity mActivity;
     ArrayList<String> itemNames = new ArrayList<>();
     ArrayList<String> itemUnits = new ArrayList<>();
-    ArrayList<Long> itemQtys = new ArrayList<>();
+    ArrayList<Double> itemQtys = new ArrayList<Double>();
 
     private ImageView imageViewCloseButton;
     private RecyclerView itemsToAddRecycler;
@@ -64,7 +64,7 @@ public class AddRationDialog extends Dialog {
         requestItemsBtn = findViewById(R.id.requestItemsBtn);
 
         for (int i=0; i<itemNames.size(); i++) {
-            itemQtys.add(0L);
+            itemQtys.add(0.0);
         }
 
         imageViewCloseButton.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +80,7 @@ public class AddRationDialog extends Dialog {
 
         addRationItemsAdapter.addOnItemQtyChangeListener(new AddRationItemsAdapter.ItemQtyAdapterCallback() {
             @Override
-            public void setItemQuantity(int position, Long currItemQty) {
+            public void setItemQuantity(int position, Double currItemQty) {
                 itemQtys.set(position, currItemQty);
             }
         });
@@ -94,7 +94,7 @@ public class AddRationDialog extends Dialog {
                 Log.wtf("USER_NAME", MainActivity.CURRENT_USER_MODEL.getName());
 
                 boolean allZero = true;
-                for (Long l : itemQtys) {
+                for (Double l : itemQtys) {
                     if (l > 0) {
                         allZero = false;
                         break;

@@ -57,11 +57,11 @@ public class AddRationItemsAdapter extends RecyclerView.Adapter<AddRationItemsAd
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Long currItemQty;
+                Double currItemQty;
                 try {
-                    currItemQty = Long.valueOf(String.valueOf(s));
+                    currItemQty = Double.valueOf(String.valueOf(s));
                 } catch (NumberFormatException e) {
-                    currItemQty = 0L;
+                    currItemQty = 0.0;
                 }
                 itemQtyAdapterCallbackListener.setItemQuantity(position, currItemQty);
             }
@@ -96,7 +96,7 @@ public class AddRationItemsAdapter extends RecyclerView.Adapter<AddRationItemsAd
     }
 
     public interface ItemQtyAdapterCallback {
-        void setItemQuantity(int position, Long currItemQty);
+        void setItemQuantity(int position, Double currItemQty);
     }
 
 }

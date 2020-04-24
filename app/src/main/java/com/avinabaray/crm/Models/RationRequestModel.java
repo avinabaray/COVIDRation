@@ -23,7 +23,7 @@ public class RationRequestModel {
     private String userRole;
     private ArrayList<String> itemNames = new ArrayList<>();
     private ArrayList<String> itemUnits = new ArrayList<>();
-    private ArrayList<Long> itemQtys = new ArrayList<>();
+    private ArrayList<Double> itemQtys = new ArrayList<Double>();
     private Long pinCode;
     private Timestamp requestTime;
     private Timestamp responseTime;
@@ -90,11 +90,11 @@ public class RationRequestModel {
         this.itemUnits = itemUnits;
     }
 
-    public ArrayList<Long> getItemQtys() {
+    public ArrayList<Double> getItemQtys() {
         return itemQtys;
     }
 
-    public void setItemQtys(ArrayList<Long> itemQtys) {
+    public void setItemQtys(ArrayList<Double> itemQtys) {
         this.itemQtys = itemQtys;
     }
 
