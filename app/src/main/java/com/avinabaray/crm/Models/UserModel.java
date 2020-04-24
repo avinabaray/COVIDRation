@@ -18,9 +18,11 @@ public class UserModel {
     private Boolean activeStatus = true;
 
     /**
-     * userRole: user, admin, superAdmin
+     * userRole: user, admin, adminPending, superAdmin
+     * <br><br>
+     *     admin is displayed as Volunteer
      * <br>
-     * admin is displayed as Volunteer
+     *     adminPending(s) are Volunteers to be approved by superAdmin
      */
     String userRole = "user";
 

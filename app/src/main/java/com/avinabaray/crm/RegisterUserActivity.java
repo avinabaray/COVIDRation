@@ -13,9 +13,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.avinabaray.crm.Models.UserModel;
@@ -34,6 +37,7 @@ public class RegisterUserActivity extends BaseActivity {
     EditText editTextName, editTextAddress, editTextPINCode, editTextIncome;
     EditText editTextAdultMembers, editTextChildMembers, editTextEarningMembers;
     Spinner spinnerOccupation;
+    Switch switchUserRole;
 
     private DocumentReference mDocRef = FirebaseFirestore.getInstance().collection("users").document();
 
@@ -45,9 +49,11 @@ public class RegisterUserActivity extends BaseActivity {
     CommonMethods commonMethods = new CommonMethods();
     private AlertDialog.Builder alertBuilder;
     private ScrollView rootLayout;
+    private LinearLayout nameLinLay, addressLinLay, pinCodeLinLay, incomeLinLay, occupationLinLay, familyMembersLinLay;
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+    private boolean isVolunteer = false;
 
 
     @Override
@@ -64,6 +70,14 @@ public class RegisterUserActivity extends BaseActivity {
         editTextAdultMembers = findViewById(R.id.editTextAdultMembers);
         editTextChildMembers = findViewById(R.id.editTextChildMembers);
         editTextEarningMembers = findViewById(R.id.editTextEarningMembers);
+        switchUserRole = findViewById(R.id.switchUserRole);
+        nameLinLay = findViewById(R.id.nameLinLay);
+        addressLinLay = findViewById(R.id.addressLinLay);
+        pinCodeLinLay = findViewById(R.id.pinCodeLinLay);
+        incomeLinLay = findViewById(R.id.incomeLinLay);
+        occupationLinLay = findViewById(R.id.occupationLinLay);
+        familyMembersLinLay = findViewById(R.id.familyMembersLinLay);
+
 
         pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         alertBuilder = new AlertDialog.Builder(mActivity);
@@ -75,6 +89,26 @@ public class RegisterUserActivity extends BaseActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 rootLayout.requestDisallowInterceptTouchEvent(true);
                 return false;
+            }
+        });
+
+        switchUserRole.setChecked(true);
+        switchUserRole.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    isVolunteer = false;
+                    incomeLinLay.setVisibility(View.VISIBLE);
+                    occupationLinLay.setVisibility(View.VISIBLE);
+                    familyMembersLinLay.setVisibility(View.VISIBLE);
+                    editTextIncome.setVisibility(View.VISIBLE);
+                } else {
+                    isVolunteer = true;
+                    incomeLinLay.setVisibility(View.GONE);
+                    occupationLinLay.setVisibility(View.GONE);
+                    familyMembersLinLay.setVisibility(View.GONE);
+                    editTextIncome.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -123,25 +157,37 @@ public class RegisterUserActivity extends BaseActivity {
         } catch (Exception e) {
             newUserModel.setPinCode(-1L);
         }
-        try {
-            newUserModel.setMonthlyIncome(Long.valueOf(editTextIncome.getText().toString()));
-        } catch (Exception e) {
-            newUserModel.setMonthlyIncome(-1L);
-        }
-        try {
-            newUserModel.setAdultMembers(Long.valueOf(editTextAdultMembers.getText().toString()));
-        } catch (NumberFormatException e) {
-            newUserModel.setAdultMembers(-1L);
-        }
-        try {
-            newUserModel.setChildMembers(Long.valueOf(editTextChildMembers.getText().toString()));
-        } catch (NumberFormatException e) {
-            newUserModel.setChildMembers(-1L);
-        }
-        try {
-            newUserModel.setEarningMembers(Long.valueOf(editTextEarningMembers.getText().toString()));
-        } catch (NumberFormatException e) {
-            newUserModel.setEarningMembers(-1L);
+
+        if (isVolunteer) {
+
+            newUserModel.setMonthlyIncome(0L);
+            newUserModel.setOccupation("Others");
+            newUserModel.setAdultMembers(1L);
+            newUserModel.setChildMembers(0L);
+            newUserModel.setEarningMembers(0L);
+            newUserModel.setUserRole("adminPending");
+
+        } else {
+            try {
+                newUserModel.setMonthlyIncome(Long.valueOf(editTextIncome.getText().toString()));
+            } catch (Exception e) {
+                newUserModel.setMonthlyIncome(-1L);
+            }
+            try {
+                newUserModel.setAdultMembers(Long.valueOf(editTextAdultMembers.getText().toString()));
+            } catch (NumberFormatException e) {
+                newUserModel.setAdultMembers(-1L);
+            }
+            try {
+                newUserModel.setChildMembers(Long.valueOf(editTextChildMembers.getText().toString()));
+            } catch (NumberFormatException e) {
+                newUserModel.setChildMembers(-1L);
+            }
+            try {
+                newUserModel.setEarningMembers(Long.valueOf(editTextEarningMembers.getText().toString()));
+            } catch (NumberFormatException e) {
+                newUserModel.setEarningMembers(-1L);
+            }
         }
 
         if (newUserModel.getName().isEmpty()) {

@@ -90,7 +90,7 @@ public class UserDashActivity extends BaseActivity {
                     }
                 });
 
-        lottieStayHome.enableMergePathsForKitKatAndAbove(true);
+//        lottieStayHome.enableMergePathsForKitKatAndAbove(true);
 //        lottieStayHome.playAnimation();
 //        lottieStayHome.setRepeatCount(3);
 

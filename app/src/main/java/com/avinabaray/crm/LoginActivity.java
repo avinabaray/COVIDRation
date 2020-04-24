@@ -237,10 +237,13 @@ public class LoginActivity extends AppCompatActivity {
                                             intent = new Intent(mActivity, UserDashActivity.class);
                                             break;
                                         case "admin":
-                                            intent = new Intent(mActivity, AdminActivity.class);
+                                            intent = new Intent(mActivity, AdminEntryActivity.class);
                                             break;
                                         case "superAdmin":
                                             intent = new Intent(mActivity, SuperAdminDashActivity.class);
+                                            break;
+                                        case "adminPending":
+                                            intent = new Intent(mActivity, PendingAdminActivity.class);
                                             break;
                                         default:
                                             intent = new Intent(mActivity, UserDashActivity.class);

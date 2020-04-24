@@ -55,7 +55,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/topBarConsLay"
                 app:layout_constraintBottom_toTopOf="@+id/itemsToAddRecycler"
                 android:text="For user"
-                android:gravity="center"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:paddingLeft="5dp"
+                android:gravity="left"
                 android:layout_margin="3dp"
                 android:visibility="gone"
                 />

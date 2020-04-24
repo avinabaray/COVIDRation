@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AboutUsActivity"></activity>
+        <activity android:name=".AdminEntryActivity"></activity>
+        <activity android:name=".PendingAdminActivity" />
+        <activity android:name=".AboutUsActivity" />
         <activity android:name=".EditUsersActivity" />
         <activity android:name=".AdminActivity" />
         <activity android:name=".EditItemListActivity" />
