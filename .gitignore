@@ -12,3 +12,7 @@
 /captures
 .externalNativeBuild
 .cxx
+covid_ration_key.jks
+covid_ration_key_details.txt
+/app/release
+app/google-services.json
