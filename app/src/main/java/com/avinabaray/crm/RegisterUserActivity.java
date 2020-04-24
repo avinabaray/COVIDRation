@@ -1,7 +1,6 @@
 package com.avinabaray.crm;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.avinabaray.crm.Models.UserModel;
 import com.avinabaray.crm.Utils.CommonMethods;
@@ -28,13 +26,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 public class RegisterUserActivity extends BaseActivity {
 
     private static final String TAG = "RegisterAct";
-    EditText editTextName, editTextAddress, editTextPINCode, editTextIncome;
+    EditText editTextPhone, editTextName, editTextAddress, editTextPINCode, editTextIncome;
     EditText editTextAdultMembers, editTextChildMembers, editTextEarningMembers;
     Spinner spinnerOccupation;
     Switch switchUserRole;
@@ -49,11 +48,13 @@ public class RegisterUserActivity extends BaseActivity {
     CommonMethods commonMethods = new CommonMethods();
     private AlertDialog.Builder alertBuilder;
     private ScrollView rootLayout;
-    private LinearLayout nameLinLay, addressLinLay, pinCodeLinLay, incomeLinLay, occupationLinLay, familyMembersLinLay;
+    private LinearLayout phoneLinLay, nameLinLay, addressLinLay, pinCodeLinLay;
+    private LinearLayout incomeLinLay, occupationLinLay, familyMembersLinLay;
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private boolean isVolunteer = false;
+    private boolean throughOtpVerification;
 
 
     @Override
@@ -62,6 +63,7 @@ public class RegisterUserActivity extends BaseActivity {
         setContentView(R.layout.activity_register_user);
 
         rootLayout = findViewById(R.id.rootLayout);
+        editTextPhone = findViewById(R.id.editTextPhone);
         editTextName = findViewById(R.id.editTextName);
         editTextAddress = findViewById(R.id.editTextAddress);
         editTextPINCode = findViewById(R.id.editTextPINCode);
@@ -71,6 +73,7 @@ public class RegisterUserActivity extends BaseActivity {
         editTextChildMembers = findViewById(R.id.editTextChildMembers);
         editTextEarningMembers = findViewById(R.id.editTextEarningMembers);
         switchUserRole = findViewById(R.id.switchUserRole);
+        phoneLinLay = findViewById(R.id.phoneLinLay);
         nameLinLay = findViewById(R.id.nameLinLay);
         addressLinLay = findViewById(R.id.addressLinLay);
         pinCodeLinLay = findViewById(R.id.pinCodeLinLay);
@@ -80,6 +83,7 @@ public class RegisterUserActivity extends BaseActivity {
 
 
         pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        throughOtpVerification = getIntent().getBooleanExtra("throughOtpVerification", false);
         alertBuilder = new AlertDialog.Builder(mActivity);
 
         initOccupationSpinner();
@@ -91,6 +95,12 @@ public class RegisterUserActivity extends BaseActivity {
                 return false;
             }
         });
+
+        if (throughOtpVerification) {
+            phoneLinLay.setVisibility(View.GONE);
+        } else {
+            phoneLinLay.setVisibility(View.VISIBLE);
+        }
 
         switchUserRole.setChecked(true);
         switchUserRole.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -150,7 +160,7 @@ public class RegisterUserActivity extends BaseActivity {
 
     public void register(View view) {
 
-        newUserModel.setName(editTextName.getText().toString());
+        newUserModel.setName(normalizeNameString(editTextName.getText().toString()));
         newUserModel.setAddress(editTextAddress.getText().toString());
         try {
             newUserModel.setPinCode(Long.valueOf(editTextPINCode.getText().toString()));
@@ -211,30 +221,146 @@ public class RegisterUserActivity extends BaseActivity {
         } else if (newUserModel.getChildMembers() < 0) {
             commonMethods.createAlert(alertBuilder, "Enter a valid No. of Children");
             return;
-        } else if (newUserModel.getEarningMembers() >= newUserModel.getAdultMembers() + newUserModel.getChildMembers()) {
+        } else if (newUserModel.getEarningMembers() >= newUserModel.getAdultMembers() + newUserModel.getChildMembers() || newUserModel.getEarningMembers() < 0) {
             commonMethods.createAlert(alertBuilder, "Earning members can't be more than total Family Members");
             return;
         }
 
-        newUserModel.setPhone(pref.getString("CURRENT_PHONE", ""));
-        newUserModel.setId(mDocRef.getId());
-        newUserModel.setTimestamp(Timestamp.now());
+        if (throughOtpVerification) {
+            newUserModel.setPhone(pref.getString("CURRENT_PHONE", ""));
 
-        mDocRef.set(newUserModel)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            newUserModel.setId(mDocRef.getId());
+            newUserModel.setTimestamp(Timestamp.now());
+
+            commonMethods.loadingDialogStart(mActivity, "Creating New Account...");
+            mDocRef.set(newUserModel)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            commonMethods.loadingDialogStop();
+                            commonMethods.makeSnack(rootLayout, "User Registered Successfully");
+                            Intent i = new Intent(mActivity, MainActivity.class);
+                            startActivity(i);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    commonMethods.loadingDialogStop();
+                    Log.e(TAG, "onFailure: ", e);
+                    commonMethods.makeSnack(rootLayout, "Oops... Please Try Again");
+                }
+            });
+
+
+        } else {
+            String currPhoneNumberTemp = editTextPhone.getText().toString();
+            currPhoneNumberTemp = currPhoneNumberTemp.replaceAll("\\s", "");
+            if (!isValidPhoneNo(currPhoneNumberTemp)) {
+                commonMethods.createAlert(new AlertDialog.Builder(mActivity), "Please Enter a Valid Phone Number");
+                return;
+            } else {
+
+                final String currPhoneNumber = MainActivity.COUNTRY_CODE + currPhoneNumberTemp;
+                commonMethods.loadingDialogStart(mActivity);
+                FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .whereEqualTo("phone", currPhoneNumber)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                commonMethods.loadingDialogStop();
+                                if (queryDocumentSnapshots.size() == 0) {
+                                    newUserModel.setPhone(currPhoneNumber);
+
+                                    newUserModel.setId(mDocRef.getId());
+                                    newUserModel.setTimestamp(Timestamp.now());
+
+                                    commonMethods.loadingDialogStart(mActivity, "Creating New Account...");
+                                    mDocRef.set(newUserModel)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    commonMethods.loadingDialogStop();
+                                                    commonMethods.makeSnack(rootLayout, "User Registered Successfully");
+                                                    clearFields();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            commonMethods.loadingDialogStop();
+                                            Log.e(TAG, "onFailure: ", e);
+                                            commonMethods.makeSnack(rootLayout, "Oops... Please Try Again");
+                                        }
+                                    });
+
+                                } else {
+                                    commonMethods.createAlert(new AlertDialog.Builder(mActivity),
+                                            "This phone number is already registered with us");
+                                    return;
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(mActivity, "Successfully Registered", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(mActivity, MainActivity.class);
-                        startActivity(i);
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "onFailure: ", e);
+                        commonMethods.makeSnack(rootLayout, "Oops... Please Try Again");
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: ", e);
-                commonMethods.makeSnack(rootLayout, "Oops... Please Try Again");
-            }
-        });
+                });
 
+            }
+
+        }
+
+    }
+
+    public void clearFields() {
+
+        newUserModel = new UserModel();
+
+        editTextPhone.setText("");
+        editTextName.setText("");
+        editTextAddress.setText("");
+        editTextPINCode.setText("");
+        editTextIncome.setText("");
+        spinnerOccupation.setSelection(0, true);
+        editTextAdultMembers.setText("");
+        editTextChildMembers.setText("");
+        editTextEarningMembers.setText("");
+    }
+
+    public boolean isValidPhoneNo(String str) {
+        return str.matches("\\d{10}");
+    }
+
+    public String normalizeNameString(String str) {
+
+        // Create a char array of given String
+        char ch[] = str.toCharArray();
+        for (int i = 0; i < str.length(); i++) {
+
+            // If first character of a word is found
+            if (i == 0 && ch[i] != ' ' ||
+                    ch[i] != ' ' && ch[i - 1] == ' ') {
+
+                // If it is in lower-case
+                if (ch[i] >= 'a' && ch[i] <= 'z') {
+
+                    // Convert into Upper-case
+                    ch[i] = (char) (ch[i] - 'a' + 'A');
+                }
+            }
+
+            // If apart from first character
+            // Any one is in Upper-case
+            else if (ch[i] >= 'A' && ch[i] <= 'Z')
+
+                // Convert into Lower-Case
+                ch[i] = (char) (ch[i] + 'a' - 'A');
+        }
+
+        // Convert the char array to equivalent String
+        String st = new String(ch);
+        return st;
     }
 }

@@ -131,6 +131,18 @@
                 android:text="Add Ration Request"
                 />
 
+            <Button
+                android:id="@+id/approveAdminRequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/delivered_green"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:text="Approve Volunteer Request"
+                />
+
+
+
 
         </LinearLayout>
 

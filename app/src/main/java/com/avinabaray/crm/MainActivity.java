@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                             if (queryDocumentSnapshots.isEmpty()) {
                                 // New user. Get all details from user here
                                 Intent i = new Intent(mActivity, RegisterUserActivity.class);
+                                i.putExtra("throughOtpVerification", true);
                                 startActivity(i);
                                 finish();
                             } else {

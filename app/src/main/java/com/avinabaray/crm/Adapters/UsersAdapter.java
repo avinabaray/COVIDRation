@@ -105,6 +105,33 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 break;
         }
 
+        if (userModels.get(position).getUserRole().equals("adminPending")) {
+            holder.userRoleSpinner.setEnabled(false);
+            holder.approveAdminRequest.setVisibility(View.VISIBLE);
+            holder.approveAdminRequest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    toAddUserModel.setUserRole("admin");
+                    FirebaseFirestore.getInstance()
+                            .collection("users")
+                            .document(toAddUserModel.getId())
+                            .set(toAddUserModel)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.wtf("DATABASE", "called");
+                                    commonMethods.makeSnack(rootLayout, "New Volunteer added");
+                                }
+                            });
+
+                }
+            });
+        } else {
+            holder.userRoleSpinner.setEnabled(true);
+            holder.approveAdminRequest.setVisibility(View.GONE);
+        }
+
         holder.userRoleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -258,7 +285,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         TextView name, phone;
         Spinner userRoleSpinner;
-        Button addRationBySupAdmin;
+        Button addRationBySupAdmin, approveAdminRequest;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -267,6 +294,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             phone = itemView.findViewById(R.id.phone);
             userRoleSpinner = itemView.findViewById(R.id.userRoleSpinner);
             addRationBySupAdmin = itemView.findViewById(R.id.addRationBySupAdmin);
+            approveAdminRequest = itemView.findViewById(R.id.approveAdminRequest);
 
         }
     }

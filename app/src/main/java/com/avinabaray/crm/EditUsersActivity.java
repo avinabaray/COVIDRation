@@ -6,13 +6,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import com.avinabaray.crm.Adapters.UsersAdapter;
 import com.avinabaray.crm.Models.UserModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +33,7 @@ public class EditUsersActivity extends BaseActivity {
     private Activity mActivity = this;
     private UsersAdapter usersAdapter;
     private ConstraintLayout rootLayout;
+    private FloatingActionButton addUserBySuperAdmin;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,6 +66,15 @@ public class EditUsersActivity extends BaseActivity {
 
         usersRecy = findViewById(R.id.usersRecy);
         rootLayout = findViewById(R.id.rootLayout);
+        addUserBySuperAdmin = findViewById(R.id.addUserBySuperAdmin);
+
+        addUserBySuperAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mActivity, RegisterUserActivity.class);
+                startActivity(i);
+            }
+        });
 
         userRoles.add("User");
         userRoles.add("Volunteer");
