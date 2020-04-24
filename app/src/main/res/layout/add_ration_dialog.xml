@@ -20,7 +20,7 @@
                 android:id="@+id/topBarConsLay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/itemsToAddRecycler"
+                app:layout_constraintBottom_toTopOf="@+id/forUserName"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -48,13 +48,24 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TextView
+                android:id="@+id/forUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/topBarConsLay"
+                app:layout_constraintBottom_toTopOf="@+id/itemsToAddRecycler"
+                android:text="For user"
+                android:gravity="center"
+                android:layout_margin="3dp"
+                android:visibility="gone"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/itemsToAddRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 app:layout_constraintBottom_toTopOf="@id/btnsLinLay"
-                app:layout_constraintTop_toBottomOf="@id/topBarConsLay" />
+                app:layout_constraintTop_toBottomOf="@id/forUserName" />
 
             <LinearLayout
                 android:id="@+id/btnsLinLay"

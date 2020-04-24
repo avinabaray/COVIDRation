@@ -1,16 +1,14 @@
 package com.avinabaray.crm;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
 
 import com.avinabaray.crm.Adapters.UsersAdapter;
@@ -31,6 +29,7 @@ public class EditUsersActivity extends BaseActivity {
     private ArrayList<String> userRoles = new ArrayList<>();
     private Activity mActivity = this;
     private UsersAdapter usersAdapter;
+    private ConstraintLayout rootLayout;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,6 +61,7 @@ public class EditUsersActivity extends BaseActivity {
         setContentView(R.layout.activity_edit_users);
 
         usersRecy = findViewById(R.id.usersRecy);
+        rootLayout = findViewById(R.id.rootLayout);
 
         userRoles.add("User");
         userRoles.add("Volunteer");
@@ -78,7 +78,7 @@ public class EditUsersActivity extends BaseActivity {
                                 userModels.add(documentSnapshot.toObject(UserModel.class));
                             }
 
-                            usersAdapter = new UsersAdapter(mActivity, userModels, userRoles);
+                            usersAdapter = new UsersAdapter(mActivity, userModels, userRoles, rootLayout);
                             usersRecy.setAdapter(usersAdapter);
                             usersRecy.setLayoutManager(new LinearLayoutManager(mActivity));
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.avinabaray.crm.Adapters.AddRationItemsAdapter;
 import com.avinabaray.crm.MainActivity;
 import com.avinabaray.crm.Models.RationRequestModel;
+import com.avinabaray.crm.Models.UserModel;
 import com.avinabaray.crm.R;
 import com.avinabaray.crm.Utils.CommonMethods;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,17 +41,28 @@ public class AddRationDialog extends Dialog {
     private Button requestItemsBtn;
     private AlertDialog.Builder alertBuilder;
     private ConstraintLayout rootLayout;
+    private UserModel currUserModel;
     CommonMethods commonMethods = new CommonMethods();
+    private TextView forUserName;
 
+    /**
+     * @param mActivity
+     * @param itemNames
+     * @param itemUnits
+     * @param rootLayout
+     * @param currUserModel pass null if the user is requesting his own ration
+     */
     public AddRationDialog(@NonNull Activity mActivity,
                            ArrayList<String> itemNames,
                            ArrayList<String> itemUnits,
-                           ConstraintLayout rootLayout) {
+                           ConstraintLayout rootLayout,
+                           UserModel currUserModel) {
         super(mActivity);
         this.mActivity = mActivity;
         this.itemNames = itemNames;
         this.itemUnits = itemUnits;
         this.rootLayout = rootLayout;
+        this.currUserModel = currUserModel;
     }
 
     @Override
@@ -62,6 +75,12 @@ public class AddRationDialog extends Dialog {
         imageViewCloseButton = findViewById(R.id.imageViewCloseButton);
         itemsToAddRecycler = findViewById(R.id.itemsToAddRecycler);
         requestItemsBtn = findViewById(R.id.requestItemsBtn);
+        forUserName = findViewById(R.id.forUserName);
+
+        if (currUserModel != null) {
+            forUserName.setVisibility(View.VISIBLE);
+            forUserName.setText("For " + currUserModel.getName());
+        }
 
         for (int i=0; i<itemNames.size(); i++) {
             itemQtys.add(0.0);
@@ -91,7 +110,11 @@ public class AddRationDialog extends Dialog {
         requestItemsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.wtf("USER_NAME", MainActivity.CURRENT_USER_MODEL.getName());
+                if (currUserModel != null) {
+                    Log.wtf("USER_NAME", currUserModel.getName());
+                } else {
+                    Log.wtf("USER_NAME", MainActivity.CURRENT_USER_MODEL.getName());
+                }
 
                 boolean allZero = true;
                 for (Double l : itemQtys) {
@@ -112,13 +135,20 @@ public class AddRationDialog extends Dialog {
                 RationRequestModel newRationRequestModel = new RationRequestModel();
 
                 newRationRequestModel.setId(mDocRef.getId());
-                newRationRequestModel.setUserName(MainActivity.CURRENT_USER_MODEL.getName());
-                newRationRequestModel.setUserId(MainActivity.CURRENT_USER_MODEL.getId());
-                newRationRequestModel.setUserRole(MainActivity.CURRENT_USER_MODEL.getUserRole());
+                if (currUserModel != null) {
+                    newRationRequestModel.setUserName(currUserModel.getName());
+                    newRationRequestModel.setUserId(currUserModel.getId());
+                    newRationRequestModel.setUserRole(currUserModel.getUserRole());
+                    newRationRequestModel.setPinCode(currUserModel.getPinCode());
+                } else {
+                    newRationRequestModel.setUserName(MainActivity.CURRENT_USER_MODEL.getName());
+                    newRationRequestModel.setUserId(MainActivity.CURRENT_USER_MODEL.getId());
+                    newRationRequestModel.setUserRole(MainActivity.CURRENT_USER_MODEL.getUserRole());
+                    newRationRequestModel.setPinCode(MainActivity.CURRENT_USER_MODEL.getPinCode());
+                }
                 newRationRequestModel.setItemNames(itemNames);
                 newRationRequestModel.setItemUnits(itemUnits);
                 newRationRequestModel.setItemQtys(itemQtys);
-                newRationRequestModel.setPinCode(MainActivity.CURRENT_USER_MODEL.getPinCode());
                 newRationRequestModel.setRequestTime(Timestamp.now());
                 commonMethods.loadingDialogStart(mActivity);
                 mDocRef.set(newRationRequestModel)

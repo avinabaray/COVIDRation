@@ -81,7 +81,7 @@
                 android:layout_weight="1"
                 app:cornerRadius="6dp"
                 android:onClick="editUsers"
-                android:text="Edit Users"
+                android:text="View Users"
                 />
 
         </LinearLayout>
