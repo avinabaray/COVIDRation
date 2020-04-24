@@ -2,6 +2,8 @@ package com.avinabaray.crm.Adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -37,11 +39,13 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
     private Activity mActivity;
     private ArrayList<RationRequestModel> rationRequestModels;
     private ArrayList<RationRequestModel> rationRequestModelsFull;
+    AlertDialog.Builder alertDialogBuilder;
 
     public RationDisplayAdapter(Activity mActivity, ArrayList<RationRequestModel> rationRequestModels) {
         this.mActivity = mActivity;
         this.rationRequestModels = rationRequestModels;
         rationRequestModelsFull = new ArrayList<>(rationRequestModels);
+        alertDialogBuilder = new AlertDialog.Builder(mActivity);
     }
 
     @NonNull
@@ -114,8 +118,12 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
         if (rationRequestModels.get(position).getRequestStatus().equals(RationRequestModel.APPROVED)) {
             holder.approveBtn.setEnabled(false);
         } else if (rationRequestModels.get(position).getRequestStatus().equals(RationRequestModel.DELIVERED)) {
+            holder.approveBtn.setEnabled(false);
             holder.deliveredBtn.setEnabled(false);
+            holder.rejectBtn.setEnabled(false);
         } else if (rationRequestModels.get(position).getRequestStatus().equals(RationRequestModel.REJECTED)) {
+            holder.approveBtn.setEnabled(false);
+            holder.deliveredBtn.setEnabled(false);
             holder.rejectBtn.setEnabled(false);
         }
 
@@ -126,33 +134,84 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
         holder.rejectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toAddRationModel.setRequestStatus(RationRequestModel.REJECTED);
-                toAddRationModel.setResponseTime(Timestamp.now());
-                toAddRationModel.setRejectTime(Timestamp.now());
-                toAddRationModel.setRejectedBy(MainActivity.CURRENT_USER_MODEL.getName());
-                updateRationModel(toAddRationModel);
+                alertDialogBuilder.setTitle("Reject Request")
+                        .setMessage("Are you sure?")
+                        .setCancelable(false)
+                        .setPositiveButton("           NO           ", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }).setNeutralButton("           YES           ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        toAddRationModel.setRequestStatus(RationRequestModel.REJECTED);
+                        toAddRationModel.setResponseTime(Timestamp.now());
+                        toAddRationModel.setRejectTime(Timestamp.now());
+                        toAddRationModel.setRejectedBy(MainActivity.CURRENT_USER_MODEL.getName());
+                        updateRationModel(toAddRationModel);
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
         holder.approveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toAddRationModel.setRequestStatus(RationRequestModel.APPROVED);
-                toAddRationModel.setResponseTime(Timestamp.now());
-                toAddRationModel.setApproveTime(Timestamp.now());
-                toAddRationModel.setApprovedBy(MainActivity.CURRENT_USER_MODEL.getName());
-                updateRationModel(toAddRationModel);
+
+                alertDialogBuilder.setTitle("Approve Request")
+                        .setMessage("Are you sure?")
+                        .setCancelable(false)
+                        .setPositiveButton("           NO           ", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+
+                            }
+                        }).setNeutralButton("           YES           ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        toAddRationModel.setRequestStatus(RationRequestModel.APPROVED);
+                        toAddRationModel.setResponseTime(Timestamp.now());
+                        toAddRationModel.setApproveTime(Timestamp.now());
+                        toAddRationModel.setApprovedBy(MainActivity.CURRENT_USER_MODEL.getName());
+                        updateRationModel(toAddRationModel);
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+
             }
         });
 
         holder.deliveredBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toAddRationModel.setRequestStatus(RationRequestModel.DELIVERED);
-                toAddRationModel.setResponseTime(Timestamp.now());
-                toAddRationModel.setDeliverTime(Timestamp.now());
-                toAddRationModel.setDeliveredBy(MainActivity.CURRENT_USER_MODEL.getName());
-                updateRationModel(toAddRationModel);
+
+                alertDialogBuilder.setTitle("Issue Request")
+                        .setMessage("Are you sure?")
+                        .setCancelable(false)
+                        .setPositiveButton("           NO           ", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+
+                            }
+                        }).setNeutralButton("           YES           ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        toAddRationModel.setRequestStatus(RationRequestModel.DELIVERED);
+                        toAddRationModel.setResponseTime(Timestamp.now());
+                        toAddRationModel.setDeliverTime(Timestamp.now());
+                        toAddRationModel.setDeliveredBy(MainActivity.CURRENT_USER_MODEL.getName());
+                        updateRationModel(toAddRationModel);
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
