@@ -215,6 +215,7 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
             }
         });
 
+        Log.wtf("USER_ID", currUserId);
         FirebaseFirestore.getInstance().collection("users")
                 .document(currUserId)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {

@@ -23,7 +23,8 @@ public class AdminEntryActivity extends BaseActivity {
 
     private static final String TAG = "AdminEntyAct";
     private ConstraintLayout rootLayout;
-    private TextView contactUs, pendingAdminMsg;
+    private TextView contactUs;
+    private TextView pendingAdminMsg;
     Activity mActivity = this;
     private Button viewRationRequestsBtn;
     private LottieAnimationView lottieStayHome;
@@ -37,7 +38,7 @@ public class AdminEntryActivity extends BaseActivity {
         rootLayout = findViewById(R.id.rootLayout);
         lottieStayHome = findViewById(R.id.lottieStayHome);
         contactUs = findViewById(R.id.contactUs);
-        pendingAdminMsg = findViewById(R.id.pendingAdminMsg);
+//        pendingAdminMsg = findViewById(R.id.pendingAdminMsg);
         viewRationRequestsBtn = findViewById(R.id.viewRationRequestsBtn);
 
         contactUs.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +62,7 @@ public class AdminEntryActivity extends BaseActivity {
                     @Override
                     public void onEvent(@Nullable final DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                         if (documentSnapshot != null) {
-                            pendingAdminMsg.setText(documentSnapshot.getString("pendingAdminMsg"));
+//                            pendingAdminMsg.setText(documentSnapshot.getString("pendingAdminMsg"));
                             contactUs.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
