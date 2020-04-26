@@ -221,7 +221,7 @@ public class RegisterUserActivity extends BaseActivity {
         } else if (newUserModel.getChildMembers() < 0) {
             commonMethods.createAlert(alertBuilder, "Enter a valid No. of Children");
             return;
-        } else if (newUserModel.getEarningMembers() >= newUserModel.getAdultMembers() + newUserModel.getChildMembers() || newUserModel.getEarningMembers() < 0) {
+        } else if (newUserModel.getEarningMembers() > newUserModel.getAdultMembers() + newUserModel.getChildMembers() || newUserModel.getEarningMembers() < 0) {
             commonMethods.createAlert(alertBuilder, "Earning members can't be more than total Family Members");
             return;
         }
