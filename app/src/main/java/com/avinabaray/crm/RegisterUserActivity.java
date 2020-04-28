@@ -317,6 +317,7 @@ public class RegisterUserActivity extends BaseActivity {
     public void clearFields() {
 
         newUserModel = new UserModel();
+        mDocRef = FirebaseFirestore.getInstance().collection("users").document();
 
         editTextPhone.setText("");
         editTextName.setText("");
