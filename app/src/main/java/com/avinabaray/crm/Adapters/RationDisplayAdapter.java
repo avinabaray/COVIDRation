@@ -269,7 +269,7 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
         } else {
             dateTimeString += (timestamp.toDate().getMonth() + 1) + "-";
         }
-        dateTimeString += String.valueOf(timestamp.toDate().getYear() + 1900) + ", ";
+        dateTimeString += String.valueOf(timestamp.toDate().getYear() + 1900 - 2000) + ", ";
         if (timestamp.toDate().getHours() > 12) {
             dateTimeString += timestamp.toDate().getHours() - 12 + ":";
             timeSuffix = "PM";
