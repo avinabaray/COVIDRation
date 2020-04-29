@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,10 +34,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.avinabaray.crm.Adapters.RationDisplayAdapter.getFormattedDateTime;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> implements Filterable {
 
@@ -73,13 +77,46 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final CommonMethods commonMethods = new CommonMethods();
 
         holder.name.setText(userModels.get(position).getName());
         holder.phone.setText(userModels.get(position).getPhone().substring(3, userModels.get(position).getPhone().length()));
         final int finalPos = position;
+
+        if (!userModels.get(position).getUserRole().equals("user")) {
+            holder.lastIssuedLinLay.setVisibility(View.GONE);
+        } else {
+            holder.lastIssuedLinLay.setVisibility(View.VISIBLE);
+        }
+        holder.lastDelivered.setText("No Requests yet");
+        holder.lastDelivered.setTextColor(mActivity.getResources().getColor(R.color.black));
+        FirebaseFirestore.getInstance()
+                .collection("rationRequest")
+                .whereEqualTo("userId", userModels.get(position).getId())
+                .orderBy("deliverTime", Query.Direction.DESCENDING).limit(1L)
+                .addSnapshotListener(mActivity, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                        Toast.makeText(mActivity, " " + position, Toast.LENGTH_SHORT).show();
+                        if (queryDocumentSnapshots != null) {
+                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                if (documentSnapshot.toObject(RationRequestModel.class).getDeliverTime() != null) {
+                                    holder.lastDelivered.setText(getFormattedDateTime(documentSnapshot.toObject(RationRequestModel.class).getDeliverTime()));
+                                    holder.lastDelivered.setTextColor(mActivity.getResources().getColor(R.color.delivered_green));
+                                } else {
+                                    holder.lastDelivered.setText("Not yet Issued");
+                                    holder.lastDelivered.setTextColor(mActivity.getResources().getColor(R.color.reject_red));
+                                }
+                            }
+                        } else {
+                            holder.lastDelivered.setText("No Requests yet");
+                            holder.lastDelivered.setTextColor(mActivity.getResources().getColor(R.color.black));
+                        }
+                    }
+                });
+
         holder.phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,9 +320,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, phone;
+        TextView name, phone, lastDelivered;
         Spinner userRoleSpinner;
         Button addRationBySupAdmin, approveAdminRequest;
+        LinearLayout lastIssuedLinLay;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -295,6 +333,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             userRoleSpinner = itemView.findViewById(R.id.userRoleSpinner);
             addRationBySupAdmin = itemView.findViewById(R.id.addRationBySupAdmin);
             approveAdminRequest = itemView.findViewById(R.id.approveAdminRequest);
+            lastDelivered = itemView.findViewById(R.id.lastDelivered);
+            lastIssuedLinLay = itemView.findViewById(R.id.lastIssuedLinLay);
 
         }
     }
