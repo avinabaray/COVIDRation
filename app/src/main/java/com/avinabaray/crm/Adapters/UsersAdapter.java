@@ -50,14 +50,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     private Activity mActivity;
     private ArrayList<UserModel> userModels = new ArrayList<>();
     private ArrayList<UserModel> userModelsFull;
+    private int[] noOfIssues;
     private ConstraintLayout rootLayout;
     private ArrayList<String> userRoles;
     private ArrayAdapter<String> roleSpinnerAdapter;
 
-    public UsersAdapter(Activity mActivity, ArrayList<UserModel> userModels, ArrayList<String> userRoles, ConstraintLayout rootLayout) {
+    public UsersAdapter(Activity mActivity,
+                        ArrayList<UserModel> userModels,
+                        ArrayList<String> userRoles,
+                        int[] noOfIssues,
+                        ConstraintLayout rootLayout) {
         this.mActivity = mActivity;
         this.userModels = userModels;
         this.userRoles = userRoles;
+        this.noOfIssues = noOfIssues;
         this.rootLayout = rootLayout;
         userModelsFull = new ArrayList<>(userModels);
     }
@@ -103,6 +109,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         }
         holder.lastDelivered.setText("No Requests yet");
         holder.lastDelivered.setTextColor(mActivity.getResources().getColor(R.color.black));
+        holder.noOfIssues.setText("Issued " + noOfIssues[position] + " time(s)");
         FirebaseFirestore.getInstance()
                 .collection("rationRequest")
                 .whereEqualTo("userId", userModels.get(position).getId())
@@ -331,7 +338,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, phone, lastDelivered;
+        TextView name, phone, lastDelivered, noOfIssues;
         Spinner userRoleSpinner;
         Button addRationBySupAdmin, approveAdminRequest;
         LinearLayout lastIssuedLinLay;
@@ -348,6 +355,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             lastDelivered = itemView.findViewById(R.id.lastDelivered);
             lastIssuedLinLay = itemView.findViewById(R.id.lastIssuedLinLay);
             infoImageView = itemView.findViewById(R.id.infoImageView);
+            noOfIssues = itemView.findViewById(R.id.noOfIssues);
 
         }
     }

@@ -1,5 +1,6 @@
 package com.avinabaray.crm;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +15,10 @@ import android.view.View;
 import android.widget.SearchView;
 
 import com.avinabaray.crm.Adapters.UsersAdapter;
+import com.avinabaray.crm.Models.RationRequestModel;
 import com.avinabaray.crm.Models.UserModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -82,7 +86,7 @@ public class EditUsersActivity extends BaseActivity {
 
         FirebaseFirestore.getInstance().collection("users")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .addSnapshotListener(mActivity, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         if (queryDocumentSnapshots != null) {
@@ -91,9 +95,32 @@ public class EditUsersActivity extends BaseActivity {
                                 userModels.add(documentSnapshot.toObject(UserModel.class));
                             }
 
-                            usersAdapter = new UsersAdapter(mActivity, userModels, userRoles, rootLayout);
-                            usersRecy.setAdapter(usersAdapter);
-                            usersRecy.setLayoutManager(new LinearLayoutManager(mActivity));
+                            final int[] noOfIssues = new int[userModels.size()];
+                            FirebaseFirestore.getInstance()
+                                    .collection("rationRequest")
+                                    .whereEqualTo("requestStatus", RationRequestModel.DELIVERED)
+                                    .get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                                String userIdInRationRequest = documentSnapshot.getString("userId");
+                                                for (int i=0; i<userModels.size(); i++) {
+                                                    if (userModels.get(i).getId().equals(userIdInRationRequest)) {
+                                                        noOfIssues[i]++;
+                                                    }
+                                                }
+                                            }
+                                            usersAdapter = new UsersAdapter(mActivity, userModels, userRoles, noOfIssues, rootLayout);
+                                            usersRecy.setAdapter(usersAdapter);
+                                            usersRecy.setLayoutManager(new LinearLayoutManager(mActivity));
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
 
                         }
                     }

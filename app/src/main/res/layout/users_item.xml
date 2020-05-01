@@ -25,6 +25,17 @@
             android:layout_marginBottom="5dp"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/noOfIssues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="2dp"
+                android:textColor="@color/delivered_green"
+                android:text="Issued 0 time(s)"
+                android:textSize="12sp"
+                />
+
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
