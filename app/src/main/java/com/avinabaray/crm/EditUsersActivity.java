@@ -95,32 +95,31 @@ public class EditUsersActivity extends BaseActivity {
                                 userModels.add(documentSnapshot.toObject(UserModel.class));
                             }
 
-                            final int[] noOfIssues = new int[userModels.size()];
+                            final int[] noOfDeliveries = new int[userModels.size()];
+                            usersAdapter = new UsersAdapter(mActivity, userModels, userRoles, noOfDeliveries, rootLayout);
+                            usersRecy.setAdapter(usersAdapter);
+                            usersRecy.setLayoutManager(new LinearLayoutManager(mActivity));
+
                             FirebaseFirestore.getInstance()
                                     .collection("rationRequest")
                                     .whereEqualTo("requestStatus", RationRequestModel.DELIVERED)
-                                    .get()
-                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    .addSnapshotListener(mActivity, new EventListener<QuerySnapshot>() {
                                         @Override
-                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                            for (int i=0; i<noOfDeliveries.length; i++) {
+                                                noOfDeliveries[i] = 0;
+                                            }
                                             for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                                 String userIdInRationRequest = documentSnapshot.getString("userId");
                                                 for (int i=0; i<userModels.size(); i++) {
                                                     if (userModels.get(i).getId().equals(userIdInRationRequest)) {
-                                                        noOfIssues[i]++;
+                                                        noOfDeliveries[i]++;
                                                     }
                                                 }
                                             }
-                                            usersAdapter = new UsersAdapter(mActivity, userModels, userRoles, noOfIssues, rootLayout);
-                                            usersRecy.setAdapter(usersAdapter);
-                                            usersRecy.setLayoutManager(new LinearLayoutManager(mActivity));
+                                            usersAdapter.notifyDataSetChanged();
                                         }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                }
-                            });
+                                    });
 
                         }
                     }
