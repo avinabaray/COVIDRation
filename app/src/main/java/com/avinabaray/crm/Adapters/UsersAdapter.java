@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avinabaray.crm.Dialogs.AddRationDialog;
+import com.avinabaray.crm.Dialogs.UserDetailsDialog;
 import com.avinabaray.crm.Models.RationRequestModel;
 import com.avinabaray.crm.Models.UserModel;
 import com.avinabaray.crm.R;
@@ -45,7 +47,7 @@ import static com.avinabaray.crm.Adapters.RationDisplayAdapter.getFormattedDateT
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> implements Filterable {
 
     private static final String TAG = "UserAdpt";
-    Activity mActivity;
+    private Activity mActivity;
     private ArrayList<UserModel> userModels = new ArrayList<>();
     private ArrayList<UserModel> userModelsFull;
     private ConstraintLayout rootLayout;
@@ -84,6 +86,15 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         holder.name.setText(userModels.get(position).getName());
         holder.phone.setText(userModels.get(position).getPhone().substring(3, userModels.get(position).getPhone().length()));
         final int finalPos = position;
+
+        holder.infoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserDetailsDialog userDetailsDialog = new UserDetailsDialog(mActivity, userModels.get(position));
+                userDetailsDialog.setCanceledOnTouchOutside(false);
+                userDetailsDialog.show();
+            }
+        });
 
         if (!userModels.get(position).getUserRole().equals("user")) {
             holder.lastIssuedLinLay.setVisibility(View.GONE);
@@ -324,6 +335,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         Spinner userRoleSpinner;
         Button addRationBySupAdmin, approveAdminRequest;
         LinearLayout lastIssuedLinLay;
+        ImageView infoImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -335,6 +347,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             approveAdminRequest = itemView.findViewById(R.id.approveAdminRequest);
             lastDelivered = itemView.findViewById(R.id.lastDelivered);
             lastIssuedLinLay = itemView.findViewById(R.id.lastIssuedLinLay);
+            infoImageView = itemView.findViewById(R.id.infoImageView);
 
         }
     }

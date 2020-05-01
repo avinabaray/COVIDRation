@@ -77,7 +77,7 @@ public class AdminActivity extends BaseActivity {
 
         categories.add("Pending");
         categories.add("Approved");
-        categories.add("Issued");
+        categories.add("Delivered");
         categories.add("Rejected");
 
         spinnerPos.add(0L);

@@ -572,6 +572,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:backgroundTint="@color/reject_red"
+                            android:textSize="13sp"
                             android:text="Reject"
                             app:strokeColor="@color/colorPrimary" />
 
@@ -583,6 +584,7 @@
                             android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:backgroundTint="@color/approve_orange"
+                            android:textSize="13sp"
                             android:text="Approve" />
 
                         <com.google.android.material.button.MaterialButton
@@ -591,7 +593,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:backgroundTint="@color/delivered_green"
-                            android:text="Issued"
+                            android:textSize="13sp"
+                            android:text="Delivered"
                             app:strokeColor="@color/colorPrimary" />
 
                     </LinearLayout>

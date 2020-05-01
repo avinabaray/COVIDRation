@@ -256,7 +256,7 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
      * @param timestamp Firebase Timestamp Object
      * @return String in DD-MM-YYYY, HH:MM(AM/PM) format
      */
-    static String getFormattedDateTime(Timestamp timestamp) {
+    public static String getFormattedDateTime(Timestamp timestamp) {
         String dateTimeString = "";
         String timeSuffix;
         if (timestamp.toDate().getDate() < 10) {
