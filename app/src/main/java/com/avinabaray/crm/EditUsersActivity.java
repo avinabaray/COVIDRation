@@ -102,7 +102,7 @@ public class EditUsersActivity extends BaseActivity {
 
                             FirebaseFirestore.getInstance()
                                     .collection("rationRequest")
-                                    .whereEqualTo("requestStatus", RationRequestModel.DELIVERED)
+//                                    .whereEqualTo("requestStatus", RationRequestModel.DELIVERED)
                                     .addSnapshotListener(mActivity, new EventListener<QuerySnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -111,8 +111,9 @@ public class EditUsersActivity extends BaseActivity {
                                             }
                                             for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                                 String userIdInRationRequest = documentSnapshot.getString("userId");
+                                                Long requestStatus = documentSnapshot.getLong("requestStatus");
                                                 for (int i=0; i<userModels.size(); i++) {
-                                                    if (userModels.get(i).getId().equals(userIdInRationRequest)) {
+                                                    if (userModels.get(i).getId().equals(userIdInRationRequest) && requestStatus.equals(RationRequestModel.DELIVERED)) {
                                                         noOfDeliveries[i]++;
                                                     }
                                                 }
