@@ -95,7 +95,7 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
         if (rationRequestModels.get(position).getDeliveredBy() != null) {
             holder.notesLinLay.setVisibility(View.VISIBLE);
             holder.deliveredTextView.setVisibility(View.VISIBLE);
-            holder.deliveredTextView.setText("Issued by " +
+            holder.deliveredTextView.setText("Delivered by " +
                     rationRequestModels.get(position).getDeliveredBy() +
                     " on " +
                     getFormattedDateTime(rationRequestModels.get(position).getDeliverTime())

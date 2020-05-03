@@ -550,7 +550,7 @@
                             android:id="@+id/deliveredTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Issued by Test Name on Date" />
+                            android:text="Delivered by Test Name on Date" />
 
                         <TextView
                             android:id="@+id/rejectedTextView"
@@ -572,7 +572,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:backgroundTint="@color/reject_red"
-                            android:textSize="13sp"
+                            android:textSize="12sp"
                             android:text="Reject"
                             app:strokeColor="@color/colorPrimary" />
 
@@ -584,7 +584,7 @@
                             android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:backgroundTint="@color/approve_orange"
-                            android:textSize="13sp"
+                            android:textSize="12sp"
                             android:text="Approve" />
 
                         <com.google.android.material.button.MaterialButton
@@ -593,7 +593,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:backgroundTint="@color/delivered_green"
-                            android:textSize="13sp"
+                            android:textSize="12sp"
                             android:text="Delivered"
                             app:strokeColor="@color/colorPrimary" />
 
