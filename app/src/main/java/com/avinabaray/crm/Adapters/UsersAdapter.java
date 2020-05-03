@@ -115,14 +115,27 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         holder.lastDelivered.setTextColor(mActivity.getResources().getColor(R.color.black));
         if (userModels.get(position).getUserRole().equals("user")) {
-            holder.noOfIssues.setVisibility(View.VISIBLE);
-            if (noOfDeliveries[position] > 0) {
-                holder.noOfIssues.setTextColor(mActivity.getResources().getColor(R.color.delivered_green));
-                holder.noOfIssues.setText("Delivered " + noOfDeliveries[position] + " time(s)");
-            } else {
-                holder.noOfIssues.setTextColor(mActivity.getResources().getColor(R.color.reject_red));
-                holder.noOfIssues.setText("No deliveries yet ");
-            }
+            final int[] currNoOfDeliveries = {0};
+            FirebaseFirestore.getInstance()
+                    .collection("rationRequest")
+                    .whereEqualTo("userId", userModels.get(position).getId())
+                    .addSnapshotListener(mActivity, new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                if (documentSnapshot.get("deliverTime") != null) {
+                                    currNoOfDeliveries[0]++;
+                                }
+                            }
+                            holder.noOfIssues.setVisibility(View.VISIBLE);
+                            if (currNoOfDeliveries[0] > 0) {
+                                holder.noOfIssues.setTextColor(mActivity.getResources().getColor(R.color.delivered_green));
+                                holder.noOfIssues.setText("Delivered " + currNoOfDeliveries[0] + " time(s)");
+                            } else {
+                                holder.noOfIssues.setTextColor(mActivity.getResources().getColor(R.color.reject_red));
+                                holder.noOfIssues.setText("No deliveries yet ");
+                            }                    }
+                    });
         } else {
             holder.noOfIssues.setVisibility(View.GONE);
         }

@@ -359,7 +359,7 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (RationRequestModel item : rationRequestModelsFull) {
-                    if (String.valueOf(item.getPinCode()).toLowerCase().startsWith(filterPattern)) {
+                    if (String.valueOf(item.getUserName()).toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }

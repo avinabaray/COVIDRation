@@ -149,27 +149,29 @@ public class EditUsersActivity extends BaseActivity {
                             usersRecy.setAdapter(usersAdapter);
                             usersRecy.setLayoutManager(new LinearLayoutManager(mActivity));
 
-                            FirebaseFirestore.getInstance()
-                                    .collection("rationRequest")
-//                                    .whereEqualTo("requestStatus", RationRequestModel.DELIVERED)
-                                    .addSnapshotListener(mActivity, new EventListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                                            for (int i=0; i<noOfDeliveries.length; i++) {
-                                                noOfDeliveries[i] = 0;
-                                            }
-                                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                                String userIdInRationRequest = documentSnapshot.getString("userId");
-                                                Long requestStatus = documentSnapshot.getLong("requestStatus");
-                                                for (int i=0; i<userModels.size(); i++) {
-                                                    if (userModels.get(i).getId().equals(userIdInRationRequest) && requestStatus.equals(RationRequestModel.DELIVERED)) {
-                                                        noOfDeliveries[i]++;
-                                                    }
-                                                }
-                                            }
-                                            usersAdapter.notifyDataSetChanged();
-                                        }
-                                    });
+                            // Below Code is for no. of Deliveries in Activity's rather than in the Adapter
+
+//                            FirebaseFirestore.getInstance()
+//                                    .collection("rationRequest")
+////                                    .whereEqualTo("requestStatus", RationRequestModel.DELIVERED)
+//                                    .addSnapshotListener(mActivity, new EventListener<QuerySnapshot>() {
+//                                        @Override
+//                                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                                            for (int i=0; i<noOfDeliveries.length; i++) {
+//                                                noOfDeliveries[i] = 0;
+//                                            }
+//                                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+//                                                String userIdInRationRequest = documentSnapshot.getString("userId");
+//                                                Long requestStatus = documentSnapshot.getLong("requestStatus");
+//                                                for (int i=0; i<userModels.size(); i++) {
+//                                                    if (userModels.get(i).getId().equals(userIdInRationRequest) && requestStatus.equals(RationRequestModel.DELIVERED)) {
+//                                                        noOfDeliveries[i]++;
+//                                                    }
+//                                                }
+//                                            }
+//                                            usersAdapter.notifyDataSetChanged();
+//                                        }
+//                                    });
 
                         }
                     }

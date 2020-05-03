@@ -54,8 +54,9 @@ public class AdminActivity extends BaseActivity {
         filterItems.setVisible(true);
 
         SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
-        searchView.setQueryHint("PIN Code");
+//        searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        searchView.setQueryHint("PIN Code");
+        searchView.setQueryHint("User Name");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
