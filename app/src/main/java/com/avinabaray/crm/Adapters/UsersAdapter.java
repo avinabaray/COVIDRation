@@ -40,6 +40,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.avinabaray.crm.Adapters.RationDisplayAdapter.getFormattedDateTime;
@@ -51,21 +53,23 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     private ArrayList<UserModel> userModels = new ArrayList<>();
     private ArrayList<UserModel> userModelsFull;
     private int[] noOfDeliveries;
-    private ConstraintLayout rootLayout;
+    private int[] noOfDeliveriesFull;
+    private ViewGroup rootLayout;
     private ArrayList<String> userRoles;
     private ArrayAdapter<String> roleSpinnerAdapter;
 
     public UsersAdapter(Activity mActivity,
                         ArrayList<UserModel> userModels,
                         ArrayList<String> userRoles,
-                        int[] noOfIssues,
-                        ConstraintLayout rootLayout) {
+                        int[] noOfDeliveries,
+                        ViewGroup rootLayout) {
         this.mActivity = mActivity;
         this.userModels = userModels;
         this.userRoles = userRoles;
-        this.noOfDeliveries = noOfIssues;
+        this.noOfDeliveries = noOfDeliveries;
         this.rootLayout = rootLayout;
         userModelsFull = new ArrayList<>(userModels);
+        noOfDeliveriesFull = noOfDeliveries;
     }
 
     @NonNull
@@ -151,9 +155,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         holder.phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                callIntent.setData(Uri.parse("tel:" + userModels.get(finalPos).getPhone()));
-                mActivity.startActivity(callIntent);
+                Toast.makeText(mActivity, "" + position + " " + noOfDeliveries[position], Toast.LENGTH_SHORT).show();
+//                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+//                callIntent.setData(Uri.parse("tel:" + userModels.get(finalPos).getPhone()));
+//                mActivity.startActivity(callIntent);
             }
         });
         holder.userRoleSpinner.setAdapter(roleSpinnerAdapter);
@@ -315,8 +320,40 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     @Override
     public Filter getFilter() {
+        Log.wtf("FIRST_VALUE", "" + noOfDeliveriesFull[0]);
+        noOfDeliveriesFull[3] = 5;
         return userNameFilter;
     }
+
+    public Filter getPhoneFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+
+                ArrayList<UserModel> filteredUserList = new ArrayList<>();
+                if (constraint == null || constraint.length() == 0) {
+                    filteredUserList.addAll(userModelsFull);
+                } else {
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+                    for (UserModel userModel : userModelsFull) {
+                        if (String.valueOf(userModel.getPhone()).toLowerCase().contains(filterPattern))
+                        filteredUserList.add(userModel);
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredUserList;
+                return results ;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                userModels.clear();
+                userModels.addAll((ArrayList) results.values);
+                notifyDataSetChanged();
+            }
+        };
+    }
+
 
     private Filter userNameFilter = new Filter() {
         @Override
@@ -326,24 +363,40 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
             if (constraint == null || constraint.length() == 0) {
                 filteredUserList.addAll(userModelsFull);
+                noOfDeliveries = noOfDeliveriesFull;
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (UserModel item : userModelsFull) {
+                int filtered_i = 0;
+                for (int i = 0; i < userModelsFull.size(); i++) {
+                    UserModel item = userModelsFull.get(i);
                     if (String.valueOf(item.getName()).toLowerCase().contains(filterPattern)) {
                         filteredUserList.add(item);
+                        noOfDeliveries[filtered_i] = noOfDeliveriesFull[i];
+                        Log.d("INDICES", "i:" + i + " filtered_i:" + filtered_i);
+                        Log.d("DATA", "i:" + noOfDeliveriesFull[i] + " filtered_i:" + noOfDeliveriesFull[filtered_i]);
+                        filtered_i++;
                     }
                 }
             }
 
             FilterResults results = new FilterResults();
-            results.values = filteredUserList;
+            Map<String, Object> filteredData = new HashMap<String, Object>();
+            filteredData.put("filteredUserList", filteredUserList);
+            filteredData.put("filteredDeliveries", noOfDeliveries);
+
+            results.values = filteredData;
             return results;
         }
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
+            Map<String, Object> filteredData = new HashMap<String, Object>();
+            filteredData = (Map<String, Object>) results.values;
+
             userModels.clear();
-            userModels.addAll((ArrayList) results.values);
+            userModels.addAll((ArrayList)filteredData.get("filteredUserList"));
+//            userModels.addAll((ArrayList) results.values);
+            noOfDeliveries = (int[]) filteredData.get("filteredDeliveries");
             notifyDataSetChanged();
         }
     };

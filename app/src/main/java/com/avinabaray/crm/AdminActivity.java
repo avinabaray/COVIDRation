@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.avinabaray.crm.Adapters.RationDisplayAdapter;
 import com.avinabaray.crm.Models.RationRequestModel;
+import com.avinabaray.crm.Utils.CommonMethods;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,12 +42,16 @@ public class AdminActivity extends BaseActivity {
     private RecyclerView requestsRecy;
     private TextView requestsCount;
     private RationDisplayAdapter rationDisplayAdapter;
+    private CommonMethods commonMethods = new CommonMethods();
+    private ViewGroup rootLayout;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item, menu);
         MenuItem searchItem = menu.findItem(R.id.searchBar);
+        MenuItem filterItems = menu.findItem(R.id.filter);
         searchItem.setVisible(true);
+        filterItems.setVisible(true);
 
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -63,6 +69,17 @@ public class AdminActivity extends BaseActivity {
                 return false;
             }
         });
+
+        filterItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+//                Toast.makeText(mActivity, "Filter Tapped", Toast.LENGTH_SHORT).show();
+//                filterBehavious.setState(BottomSheetBehavior.STATE_EXPANDED);
+                commonMethods.makeSnack(rootLayout, "Filters coming soon...");
+                return false;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -71,6 +88,7 @@ public class AdminActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        rootLayout = findViewById(R.id.rootLayout);
         categorySpinner = findViewById(R.id.categorySpinner);
         requestsRecy = findViewById(R.id.requestsRecy);
         requestsCount = findViewById(R.id.requestsCount);

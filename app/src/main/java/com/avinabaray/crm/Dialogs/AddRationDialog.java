@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ public class AddRationDialog extends Dialog {
     private RecyclerView itemsToAddRecycler;
     private Button requestItemsBtn;
     private AlertDialog.Builder alertBuilder;
-    private ConstraintLayout rootLayout;
+    private ViewGroup rootLayout;
     private UserModel currUserModel;
     CommonMethods commonMethods = new CommonMethods();
     private TextView forUserName;
@@ -55,7 +56,7 @@ public class AddRationDialog extends Dialog {
     public AddRationDialog(@NonNull Activity mActivity,
                            ArrayList<String> itemNames,
                            ArrayList<String> itemUnits,
-                           ConstraintLayout rootLayout,
+                           ViewGroup rootLayout,
                            UserModel currUserModel) {
         super(mActivity);
         this.mActivity = mActivity;

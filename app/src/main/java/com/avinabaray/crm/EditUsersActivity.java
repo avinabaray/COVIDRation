@@ -9,16 +9,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.avinabaray.crm.Adapters.UsersAdapter;
 import com.avinabaray.crm.Models.RationRequestModel;
 import com.avinabaray.crm.Models.UserModel;
+import com.avinabaray.crm.Utils.CommonMethods;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -36,14 +45,20 @@ public class EditUsersActivity extends BaseActivity {
     private ArrayList<String> userRoles = new ArrayList<>();
     private Activity mActivity = this;
     private UsersAdapter usersAdapter;
-    private ConstraintLayout rootLayout;
+    private ViewGroup rootLayout;
+    private CommonMethods commonMethods = new CommonMethods();
+    private LinearLayout filtersBottomSheet;
     private FloatingActionButton addUserBySuperAdmin;
+    private BottomSheetBehavior<LinearLayout> filterBehavious;
+    EditText editTextPhone, editTextPINCode;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item, menu);
         MenuItem searchItem = menu.findItem(R.id.searchBar);
+        MenuItem filterItems = menu.findItem(R.id.filter);
         searchItem.setVisible(true);
+        filterItems.setVisible(true);
 
         SearchView searchView = (SearchView) searchItem.getActionView();
 //        searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -61,7 +76,19 @@ public class EditUsersActivity extends BaseActivity {
                 return false;
             }
         });
-        return super.onCreateOptionsMenu(menu);    }
+
+        filterItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+//                Toast.makeText(mActivity, "Filter Tapped", Toast.LENGTH_SHORT).show();
+//                filterBehavious.setState(BottomSheetBehavior.STATE_EXPANDED);
+                commonMethods.makeSnack(rootLayout, "Filters coming soon...");
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +98,28 @@ public class EditUsersActivity extends BaseActivity {
         usersRecy = findViewById(R.id.usersRecy);
         rootLayout = findViewById(R.id.rootLayout);
         addUserBySuperAdmin = findViewById(R.id.addUserBySuperAdmin);
+        filtersBottomSheet = findViewById(R.id.filtersBottomSheet);
+        filterBehavious = BottomSheetBehavior.from(filtersBottomSheet);
+        editTextPhone = findViewById(R.id.editTextPhone);
+        editTextPINCode = findViewById(R.id.editTextPINCode);
+
+        filtersBottomSheet.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true; // returned true so that the touch events pass on to the Views below
+            }
+        });
+        filterBehavious.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
 
         addUserBySuperAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,5 +174,24 @@ public class EditUsersActivity extends BaseActivity {
                         }
                     }
                 });
+
+
+        editTextPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                usersAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 }

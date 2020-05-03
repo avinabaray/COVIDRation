@@ -5,13 +5,13 @@ import com.google.firebase.Timestamp;
 public class UserModel {
 
     private String id;
-    private String phone;
-    private Timestamp timestamp;
+    private String phone; //.
+    private Timestamp timestamp; //. frm to,   filter clear
     private String name;
     private String address;
-    private Long pinCode;
+    private Long pinCode; //.
     private Long monthlyIncome;
-    private String occupation;
+    private String occupation; //.
     private Long adultMembers;
     private Long childMembers;
     private Long earningMembers;
