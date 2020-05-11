@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.avinabaray.crm">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_new"
@@ -9,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminEntryActivity"></activity>
+        <activity android:name=".DownloadDbActivity"></activity>
+        <activity android:name=".AdminEntryActivity" />
         <activity android:name=".PendingAdminActivity" />
         <activity android:name=".AboutUsActivity" />
         <activity android:name=".EditUsersActivity" />

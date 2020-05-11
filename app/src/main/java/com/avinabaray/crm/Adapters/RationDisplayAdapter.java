@@ -287,7 +287,7 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
         return dateTimeString;
     }
 
-    private String getFormattedDate(Timestamp timestamp) {
+    public static String getFormattedDate(Timestamp timestamp) {
         String dateString = "";
         if (timestamp.toDate().getDate() < 10) {
             dateString += "0" + timestamp.toDate().getDate() + "-";
@@ -304,7 +304,7 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
         return dateString;
     }
 
-    private String getFormattedTime(Timestamp timestamp) {
+    public static String getFormattedTime(Timestamp timestamp) {
         String timeString = "";
         String timeSuffix;
 

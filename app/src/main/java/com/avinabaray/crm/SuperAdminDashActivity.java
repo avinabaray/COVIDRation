@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,6 +19,24 @@ public class SuperAdminDashActivity extends BaseActivity {
 //        super.onBackPressed();
         finishAffinity();
         System.exit(0);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_item, menu);
+        MenuItem downloadItems = menu.findItem(R.id.download);
+        downloadItems.setVisible(true);
+
+        downloadItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent i = new Intent(mActivity, DownloadDbActivity.class);
+                startActivity(i);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
