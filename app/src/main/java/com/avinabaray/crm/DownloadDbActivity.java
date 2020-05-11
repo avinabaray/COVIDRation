@@ -1,20 +1,26 @@
 package com.avinabaray.crm;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.avinabaray.crm.Models.RationRequestModel;
 import com.avinabaray.crm.Models.UserModel;
 import com.avinabaray.crm.Utils.CommonMethods;
@@ -22,7 +28,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.File;
@@ -45,13 +53,52 @@ public class DownloadDbActivity extends BaseActivity {
     CommonMethods commonMethods = new CommonMethods();
     private Activity mActivity;
     private ViewGroup rootLayout;
+    private TextView installSheets;
+    private String googleSheetsUrl = "https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.sheets&hl=en_IN";
+    private LottieAnimationView lottieDownload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download_db);
         rootLayout = findViewById(R.id.rootLayout);
+        installSheets = findViewById(R.id.installSheets);
+        lottieDownload = findViewById(R.id.lottieDownload);
         mActivity = this;
+
+        lottieDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commonMethods.makeSnack(rootLayout, "The Buttons are below");
+            }
+        });
+
+        installSheets.setText(Html.fromHtml("<b><u>Install Google Sheets</u></b>"));
+
+        FirebaseFirestore.getInstance()
+                .collection("fields")
+                .document("inAppLinks")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable final DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (documentSnapshot != null) {
+                            installSheets.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent browserIntent = null;
+                                    googleSheetsUrl = documentSnapshot.getString("googleSheets");
+                                    try {
+                                        browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(googleSheetsUrl));
+                                        startActivity(browserIntent);
+                                    } catch (Exception ex) {
+                                        ex.printStackTrace();
+                                        commonMethods.makeSnack(rootLayout, getString(R.string.conn_error));
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
     }
 
     public void downloadUserDetails(View view) {
