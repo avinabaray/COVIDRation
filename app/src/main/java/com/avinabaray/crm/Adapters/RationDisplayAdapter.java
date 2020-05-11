@@ -257,34 +257,38 @@ public class RationDisplayAdapter extends RecyclerView.Adapter<RationDisplayAdap
      * @return String in DD-MM-YYYY, HH:MM(AM/PM) format
      */
     public static String getFormattedDateTime(Timestamp timestamp) {
-        String dateTimeString = "";
-        String timeSuffix;
-        if (timestamp.toDate().getDate() < 10) {
-            dateTimeString += "0" + timestamp.toDate().getDate() + "-";
-        } else {
-            dateTimeString += timestamp.toDate().getDate() + "-";
-        }
-        if (timestamp.toDate().getMonth() < 10) {
-            dateTimeString += "0" + (timestamp.toDate().getMonth() + 1) + "-";
-        } else {
-            dateTimeString += (timestamp.toDate().getMonth() + 1) + "-";
-        }
-        dateTimeString += String.valueOf(timestamp.toDate().getYear() + 1900 - 2000) + ", ";
-        if (timestamp.toDate().getHours() > 12) {
-            dateTimeString += timestamp.toDate().getHours() - 12 + ":";
-            timeSuffix = "PM";
-        } else {
-            dateTimeString += timestamp.toDate().getHours() + ":";
-            timeSuffix = "AM";
-        }
-        if (timestamp.toDate().getMinutes() < 10) {
-            dateTimeString += "0" + timestamp.toDate().getMinutes();
-        } else {
-            dateTimeString += timestamp.toDate().getMinutes();
-        }
-        dateTimeString += timeSuffix;
+        if (timestamp != null) {
+            String dateTimeString = "";
+            String timeSuffix;
+            if (timestamp.toDate().getDate() < 10) {
+                dateTimeString += "0" + timestamp.toDate().getDate() + "-";
+            } else {
+                dateTimeString += timestamp.toDate().getDate() + "-";
+            }
+            if (timestamp.toDate().getMonth() < 10) {
+                dateTimeString += "0" + (timestamp.toDate().getMonth() + 1) + "-";
+            } else {
+                dateTimeString += (timestamp.toDate().getMonth() + 1) + "-";
+            }
+            dateTimeString += String.valueOf(timestamp.toDate().getYear() + 1900 - 2000) + ", ";
+            if (timestamp.toDate().getHours() > 12) {
+                dateTimeString += timestamp.toDate().getHours() - 12 + ":";
+                timeSuffix = "PM";
+            } else {
+                dateTimeString += timestamp.toDate().getHours() + ":";
+                timeSuffix = "AM";
+            }
+            if (timestamp.toDate().getMinutes() < 10) {
+                dateTimeString += "0" + timestamp.toDate().getMinutes();
+            } else {
+                dateTimeString += timestamp.toDate().getMinutes();
+            }
+            dateTimeString += timeSuffix;
 
-        return dateTimeString;
+            return dateTimeString;
+        } else {
+            return "null";
+        }
     }
 
     public static String getFormattedDate(Timestamp timestamp) {

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.avinabaray.crm.Models.RationRequestModel;
 import com.avinabaray.crm.Models.UserModel;
 import com.avinabaray.crm.Utils.CommonMethods;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,12 +29,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static com.avinabaray.crm.Adapters.RationDisplayAdapter.getFormattedDate;
+import static com.avinabaray.crm.Adapters.RationDisplayAdapter.getFormattedDateTime;
 
 public class DownloadDbActivity extends BaseActivity {
 
-    public static final int USER_DETAILS_CODE = 100;
+    private static final int USER_DETAILS_CODE = 100;
+    private static final int RATION_REQUESTS_CODE = 101;
     CommonMethods commonMethods = new CommonMethods();
     private Activity mActivity;
     private ViewGroup rootLayout;
@@ -122,7 +130,116 @@ public class DownloadDbActivity extends BaseActivity {
     }
 
     public void downloadRationRequests(View view) {
+        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(
+                    mActivity,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    RATION_REQUESTS_CODE);
+        } else {
+            generateRationRequests();
+        }
+    }
 
+    private void generateRationRequests() {
+        commonMethods.loadingDialogStart(mActivity, "Generating CSV...");
+        FirebaseFirestore.getInstance()
+                .collection("rationRequest")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        commonMethods.loadingDialogStop();
+                        Map<String, String> items = new HashMap<>();
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            RationRequestModel rationRequestModel = documentSnapshot.toObject(RationRequestModel.class);
+                            ArrayList<String> itemNames = rationRequestModel.getItemNames();
+                            ArrayList<String> itemUnits = rationRequestModel.getItemUnits();
+                            for (int i=0; i<itemNames.size(); i++) {
+                                items.put(itemNames.get(i), itemUnits.get(i));
+                            }
+                        }
+
+//                        Log.wtf("Yes", "On" + items.entrySet().size());
+//                        for (Map.Entry<String, String> a : items.entrySet()) {
+//                            System.out.println(a.getKey() + ": " + a.getValue());
+//                        }
+
+                        StringBuilder csvOutput = new StringBuilder();
+                        csvOutput.append("ID,")
+                                .append("User Role,")
+                                .append("Name,")
+                                .append("User ID,")
+                                .append("PIN Code,");
+                        for (Map.Entry<String, String> a : items.entrySet()) {
+                            csvOutput.append(a.getKey() + "(" + a.getValue() + ")" + ",");
+                        }
+                        csvOutput.append("Request Status,")
+                                .append("Request Time,")
+                                .append("Last Response Time,")
+                                .append("Approve Time,")
+                                .append("Approved by,")
+                                .append("Delivered Time,")
+                                .append("Delivered by,")
+                                .append("Rejected Time,")
+                                .append("Rejected by,");
+                        csvOutput.append("\n");
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            RationRequestModel rationRequestModel = documentSnapshot.toObject(RationRequestModel.class);
+                            if (rationRequestModel != null) {
+                                csvOutput.append("\"").append(rationRequestModel.getId())
+                                        .append("\",\"").append(rationRequestModel.getUserRole())
+                                        .append("\",\"").append(rationRequestModel.getUserName())
+                                        .append("\",\"").append(rationRequestModel.getUserId())
+                                        .append("\",\"").append(rationRequestModel.getPinCode());
+                                for (Map.Entry<String, String> a : items.entrySet()) {
+                                    if (rationRequestModel.getItemNames().contains(a.getKey())) {
+                                        csvOutput.append("\",\"").append(rationRequestModel.getItemQtys().get(rationRequestModel.getItemNames().indexOf(a.getKey())));
+                                    } else {
+                                        csvOutput.append("\",\"").append("0");
+                                    }
+                                }
+                                switch (rationRequestModel.getRequestStatus().intValue()) {
+                                    case 0:
+                                        csvOutput.append("\",\"").append("Pending");
+                                        break;
+                                    case 1:
+                                        csvOutput.append("\",\"").append("Approved");
+                                        break;
+                                    case 2:
+                                        csvOutput.append("\",\"").append("Delivered");
+                                        break;
+                                    case 3:
+                                        csvOutput.append("\",\"").append("Rejected");
+                                        break;
+                                    default:
+                                        csvOutput.append("\",\"").append("Unknown");
+                                }
+                                csvOutput.append("\",\"").append(getFormattedDateTime(rationRequestModel.getRequestTime()))
+                                        .append("\",\"").append(getFormattedDateTime(rationRequestModel.getResponseTime()))
+                                        .append("\",\"").append(getFormattedDateTime(rationRequestModel.getApproveTime()))
+                                        .append("\",\"").append(rationRequestModel.getApprovedBy())
+                                        .append("\",\"").append(getFormattedDateTime(rationRequestModel.getDeliverTime()))
+                                        .append("\",\"").append(rationRequestModel.getDeliveredBy())
+                                        .append("\",\"").append(getFormattedDateTime(rationRequestModel.getRejectTime()))
+                                        .append("\",\"").append(rationRequestModel.getRejectedBy());
+                                csvOutput.append("\"\n");
+                            }
+                        }
+                        csvOutput.append("\n");
+                        writeToFile(csvOutput.toString(),
+                                "Ration_Requests_" +
+                                        getFormattedDate(Timestamp.now()) +
+                                        "_" +
+                                        getFormattedTime(Timestamp.now(), true) +
+                                        ".csv"
+                        );
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                commonMethods.loadingDialogStop();
+            }
+        });
     }
 
     public void writeToFile(String data, String fileName) {
@@ -182,6 +299,14 @@ public class DownloadDbActivity extends BaseActivity {
                 commonMethods.makeSnack(rootLayout, "Please Allow to Download");
             }
         }
+        if (requestCode == RATION_REQUESTS_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                generateRationRequests();
+            } else {
+                commonMethods.makeSnack(rootLayout, "Please Allow to Download");
+            }
+        }
+
     }
 
     private String getFormattedTime(Timestamp timestamp, boolean isFileName) {
