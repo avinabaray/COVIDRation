@@ -39,9 +39,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import static com.avinabaray.crm.Adapters.RationDisplayAdapter.getFormattedDate;
 import static com.avinabaray.crm.Adapters.RationDisplayAdapter.getFormattedDateTime;
@@ -54,8 +52,9 @@ public class DownloadDbActivity extends BaseActivity {
     private Activity mActivity;
     private ViewGroup rootLayout;
     private TextView installSheets;
-    private String googleSheetsUrl = "https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.sheets&hl=en_IN";
+    private String csvAppLink = "https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.sheets&hl=en_IN";
     private LottieAnimationView lottieDownload;
+    private String csvAppName = "Install Google Sheets";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +72,7 @@ public class DownloadDbActivity extends BaseActivity {
             }
         });
 
-        installSheets.setText(Html.fromHtml("<b><u>Install Google Sheets</u></b>"));
+        installSheets.setText(Html.fromHtml("<b><u>" + csvAppName + "</u></b>"));
 
         FirebaseFirestore.getInstance()
                 .collection("fields")
@@ -85,17 +84,25 @@ public class DownloadDbActivity extends BaseActivity {
                             installSheets.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent browserIntent = null;
-                                    googleSheetsUrl = documentSnapshot.getString("googleSheets");
-                                    try {
-                                        browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(googleSheetsUrl));
-                                        startActivity(browserIntent);
-                                    } catch (Exception ex) {
-                                        ex.printStackTrace();
-                                        commonMethods.makeSnack(rootLayout, getString(R.string.conn_error));
+                                    if (documentSnapshot.contains("csvAppLink")) {
+                                        Intent browserIntent = null;
+                                        csvAppLink = documentSnapshot.getString("csvAppLink");
+                                        try {
+                                            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(csvAppLink));
+                                            startActivity(browserIntent);
+                                        } catch (Exception ex) {
+                                            ex.printStackTrace();
+                                            commonMethods.makeSnack(rootLayout, getString(R.string.conn_error));
+                                        }
                                     }
                                 }
                             });
+
+                            if (documentSnapshot.contains("csvAppName")) {
+                                csvAppName = documentSnapshot.getString("csvAppName");
+                                installSheets.setText(Html.fromHtml("<b><u>" + csvAppName + "</u></b>"));
+                            }
+
                         }
                     }
                 });
